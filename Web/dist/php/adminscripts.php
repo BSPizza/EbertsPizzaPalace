@@ -112,36 +112,9 @@
 		
 		return $retArray;
 	}	
-	
-	function getDiscounts()
-	{
-		$retArray = array();
-		createConnection();
-		
-		//create statement
-		$statement = "SELECT d.Name, d.ID FROM Discounts d WHERE d.IsDeleted=0;";
-		//query db
-		$result =  mysql_query($statement);
-		
-	
-	
-		//if there are any results fill retArray
-		if($result)
-		{
-			//add all results to retArray
-			while($row = mysql_fetch_array($result))
-			{
-				array_push($retArray, array($row["ID"], htmlentities($row["Name"])));
-			}		
-		}
-		
-		closeConnection();
-		
-		return $retArray;
-	}
-	
-	
-	
+
+
+
 	
 	function saveNewMenue($name, $categoryID, $discount, $productArray)
 	{
@@ -424,11 +397,38 @@
 	}
 	
 	
+
 	
+	function getDiscounts()
+	{
+		$retArray = array();
+		createConnection();
+		
+		//create statement
+		$statement = "SELECT Name, ID FROM Discounts WHERE IsDeleted=0;";
+		//query db
+		$result =  mysql_query($statement);
+		
+	
+	
+		//if there are any results fill retArray
+		if($result)
+		{
+			//add all results to retArray
+			while($row = mysql_fetch_array($result))
+			{
+				array_push($retArray, array($row["ID"], htmlentities($row["Name"])));
+			}		
+		}
+		
+		closeConnection();
+		
+		return $retArray;
+	}
 	
 	function saveNewDiscount($name, $begin, $end, $discount)
 	{		
-		$debug = true;
+		$debug = false;
 		if($debug) echo"parameter: name=".$name.",begin=".$begin.",end=".$end.",discount=".$discount."<br/>";
 		
 		if($debug) echo "changed ".$discount;
@@ -437,7 +437,7 @@
 		
 		createConnection();
 		if($debug) echo"create statement<br/>";
-		$statement =) "INSERT INTO Discounts(Name, Begin, End, Discount, IsDeleted) VALUES ('".$name."','".$begin."','".$end."',".$discount.",0);";
+		$statement = "INSERT INTO Discounts(Name, Begin, End, Discount, IsDeleted) VALUES ('".$name."','".$begin."','".$end."',".$discount.",0 );";
 		if($debug) echo"statement created, query db<br/>";
 		$result = mysql_query($statement);
 		if($debug) echo"db queried result".$result."<br/>";
@@ -461,7 +461,7 @@
 	function changeExistingDiscount($itemID,$name,$begin,$end,$discount)
 	{
 		$debug = false;
-		if($debug) echo"parameter: itemID=".$itemID.",name=".$name.",begin=".$begin.",end=".$end.",discount=".$discount.",ingredientArray=".$ingredientArray."<br/>";
+		if($debug) echo"parameter: itemID=".$itemID.",name=".$name.",begin=".$begin.",end=".$end.",discount=".$discount."<br/>";
 		
 		if($debug) echo "changed ".$discount;
 		$discount = str_replace(",",".",$discount);
@@ -474,29 +474,41 @@
 		if($debug) echo"statement created, query db<br/>";
 		$result = mysql_query($statement);
 		if($debug) echo"db queried result:".$result."<br/>";
-		
-		if($debug) echo"create statements to generate new entries in the crosstable<br/>";
-		if($debug) echo"start going through array of product ids:".$ingredientArray."<br/>";
-		foreach($ingredientArray as $id)
-		{
-			if($debug) echo"creating link for ".$id."<br/>";
-			//is id
-			if(is_numeric($id))
-			{
-				if($debug) echo"create new statement<br/>";
-				$statement = "INSERT INTO xProductIngredient(ProductID, IngredientID, IsDeleted) VALUES(".$itemID.",".$id.",0);";
-				if($debug) echo"statement created, query db<br/>";
-				$result = mysql_query($statement);
-				if($debug) echo"db queried result:".$result."<br/>";
-			}
-			else
-			{
-				if($debug) echo"is no id<br/>";
-			}
-			
-		}
 			
 		closeConnection();
+	}
+	
+	function saveNewCategory($name, $superCategoryID)
+	{		
+		$debug = false;
+		if($debug) echo"parameter: name=".$name.",superCategoryID=".$superCategoryID."<br/>";
+		
+		createConnection();
+		if($debug) echo"create statement<br/>";
+		$statement = "INSERT INTO Categories(Name, SuperCategory, IsDeleted) VALUES ('".$name."',".superCategoryID.",0; );";
+		if($debug) echo"statement created, query db<br/>";
+		$result = mysql_query($statement);
+		if($debug) echo"db queried result".$result."<br/>";
+		closeConnection();
+	}
+	
+	function delCategoryItem($itemID)
+	{
+		$debug = false;
+		createConnection();
+		
+		if($debug) echo"create statement to delete discount entry<br/>";
+		$statement = "UPDATE Categories SET IsDeleted=1, DeleteDate=NOW() WHERE ID = ".$itemID.";";
+		if($debug) echo"statement created, query db<br/>";
+		$result = mysql_query($statement);
+		if($debug) echo"db queried. result:".$result."<br/>";
+		
+		closeConnection();
+	}
+	
+	function changeExistingCategory($name, $superCategoryID)
+	{
+
 	}
 	
 	

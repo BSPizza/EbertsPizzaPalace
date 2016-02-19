@@ -17,6 +17,9 @@
 	<!-- Bootstrap addon for select -->
 	<link href="./dist/css/bootstrap-select.css" rel="stylesheet">
 
+	<!-- Bootstrap addon for datepicker -->
+	<link href="./dist/css/datepicker.css" rel="stylesheet">
+	
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="./assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
@@ -40,8 +43,7 @@
 		//global requires and includes
 		require("./dist/php/menu.php");
 		require("./dist/php/adminscripts.php");
-		
-
+	
 		
 
 		if(!empty($_POST['newMenueSubmit']))
@@ -110,6 +112,8 @@
 				echo "\");";
 				echo "</script>";*/
 		}
+	
+	
 	
 		if(!empty($_POST['newProductSubmit']))
 		{//handle everything for a new product submit
@@ -183,6 +187,8 @@
 				echo "</script>"; */
 		}
 	
+	
+	
 		if(!empty($_POST['newIngredientSubmit']))
 		{//handle everything for a new product submit
 			$name =$_POST['newIngredientName'];
@@ -225,6 +231,62 @@
 				echo "</script>"; */
 		}
 	
+	
+	
+		if(!empty($_POST['newDiscountSubmit']))
+		{//handle everything for a new product submit
+			$name = $_POST['newDiscountName'];
+			$begin = $_POST['newDiscountBegin'];
+			$end = $_POST['newDiscountEnd'];
+			$discount = $_POST['newDiscountValue'];
+			
+			saveNewDiscount($name, $begin, $end, $discount);
+			//debug info
+			/*echo "<script language=\"javascript\">";
+			echo "alert(\"";
+			echo "erstelle neue Rabattaktion mit Namen: ".$name;
+			echo "die am ".$begin." startet";
+			echo "am ".$end." endet";
+			echo "und einen Rabatt von ".$discount."% bietet";
+			echo "\");";
+			echo "</script>";*/
+			
+		}
+	
+		if(!empty($_POST['delDiscountSubmit']))
+		{//handle everything to delete a product
+			$toDel = $_POST['delDiscountItem'];
+			
+			delDiscountItem($toDel);
+			//debug info
+			/*echo "<script language=\"javascript\">";
+			echo "alert(\"";
+			echo $toDel;				
+			echo "\");";
+			echo "</script>";*/
+		}
+	
+		if(!empty($_POST['editDiscountSubmit']))
+		{//handle everything to edit a product
+			$itemID = $_POST['editDiscountItem'];
+			$name = $_POST['editDiscountName'];
+			$begin = $_POST['editDiscountBegin'];
+			$end = $_POST['editDiscountEnd'];
+			$discount = $_POST['editDiscountValue'];		
+				
+			changeExistingDiscount($itemID,$name,$begin,$end,$discount);
+			//debug info
+			/*echo "<script language=\"javascript\">";
+			echo "alert(\"";
+			echo "Change ID ".$id;
+			echo "Set Name to ".$name;
+			echo "Change begin to".$begin;
+			echo "End to ".$end;
+			echo "and discount to".$discount;
+			echo "\");";
+			echo "</script>"; */
+		}
+	
 	?>
 	
   </head>
@@ -237,6 +299,7 @@
 		$isAdmin = true;
 		$warenkorbCount = 0;
 		$selectedItem = -3;
+		
 		
 		
 		echoMenu($selectedItem,$isLoggedIn,$isAdmin,$warenkorbCount);
@@ -510,75 +573,111 @@
 					<div class="col-sm-4">
 						<?php 
 							echo"<form method=\"post\">";
-							echo"Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newDiscountName\"><br/>";
-							echo"Start: <input type=\"text\" class=\"form-control-nosize\" data-format=\"dd/mm/yyyy\" style=\"width:220px\" name=\"newDiscountBegin\"><br/>";
-							echo"Ende: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newDiscountEnd\"><br/>";
-							echo"Rabatt: <input type=\"number\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newDiscountValue\"><br/>";
+							echo"Name der Aktion: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newDiscountName\"><br/>";
+							echo"Startdatum: <input type=\"text\" class=\"datepicker form-control-nosize\" data-format=\"dd/mm/yyyy\" style=\"width:220px\" name=\"newDiscountBegin\"><br/>";
+							echo"Enddatum: <input type=\"text\" class=\"datepicker form-control-nosize\" style=\"width:220px\" name=\"newDiscountEnd\"><br/>";
+							echo"Rabatt in %: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newDiscountValue\"><br/>";
+							echo"<center><input type=\"submit\" name=\"newDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Speichern\" /></center>";
+							echo"</form>";
+						?>
+					</div>
+					<div class="col-sm-4">					
+						<?php 
+							echo"<form method=\"post\">";
+							echo"Aktion: <select name=\"delDiscountItem\">";
 							
-							//generate categories
-							$array = getSubCategoriesWithSuperCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>Zutaten:";
-							echo"<select name=\"newProductIngredients[]\" multiple>";
-							
-							//generate ingredients
-							$array = getIngredients();
+							$array = getDiscounts();
 							foreach($array as $d)
 							{
 								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
 							}
 							
 							echo"</select><br />";
-							echo"Energiewert: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newProductEnergyValue\"><br/>";
-							echo"Price: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newProductPrice\"><br/>";
-							echo"<center><input type=\"submit\" name=\"newProductSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Hinzufügen\" /></center>";
-							echo"</form>";
-						?>
-					</div>
-					<div class="col-sm-4">					
-						<?php 
-							
-							echo"<form method=\"post\">";
-							echo"Produkt: <select name=\"delProductItem\">";
-							
-							//generate categories
-							$array = getProductsWithCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>";						
-							echo"<center><input type=\"submit\" name=\"delProductSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>";
+							echo"<center><input type=\"submit\" name=\"delDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>";
 							echo"</form>";
 						?>
 					</div>
 					<div class="col-sm-4">
 						<?php 
 							echo"<form method=\"post\">";
-							echo"Produkt: <select name=\"editIngredientItem\">";
+							echo"Aktion: <select name=\"editDiscountItem\">";
 							
-							//generate ingredients
-							$array = getIngredients();
+							$array = getDiscounts();
 							foreach($array as $d)
 							{
 								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
 							}
-						
-							echo"</select><br/>";
-							echo"Neuer Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editIngredientName\"><br/>";
-							echo"<center><input type=\"submit\" name=\"editIngredientSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>";
+							
+							echo"</select><br />";
+							echo"Neuer Name der Aktion: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountName\"><br/>";
+							echo"Neues Startdatum: <input type=\"text\" class=\"datepicker form-control-nosize\" data-format=\"dd/mm/yyyy\" style=\"width:220px\" name=\"editDiscountBegin\"><br/>";
+							echo"Neues Enddatum: <input type=\"text\" class=\"datepicker form-control-nosize\" style=\"width:220px\" name=\"editDiscountEnd\"><br/>";
+							echo"Neuer Rabatt in %: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountValue\"><br/>";
+							echo"<center><input type=\"submit\" name=\"editDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>";
 							echo"</form>";
 						?>
 					</div>
 				</div>
 			</div>
 		</div>
-	
+		<div class="col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title" align="center">Kategorien</h3>
+				</div>
+				<div class="panel-body">
+					<div class="col-sm-4">
+						<?php 
+							echo"<form method=\"post\">";
+							echo"Name der Kategorie: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newMenuName\"><br/>";
+							echo"Übergeordnete Kategorie: <select name=\"newMenuSupercategory\">";
+							echo "<option value=\"0\">Keine übergeordnete Kategorie</option>";
+							$menues = getMenuHeaderStrings();											
+							foreach($menues as $d)
+							{
+								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+							}
+							echo "</select><br />";
+							
+							echo"<center><input type=\"submit\" name=\"newCategorySubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Speichern\" /></center>";
+							echo"</form>";
+						?>
+					</div>
+					<div class="col-sm-4">					
+						<?php 
+							echo"<form method=\"post\">";
+							echo"Kategorie: <select name=\"delDiscountItem\">";
+							
+							$array = getCategories();
+							foreach($array as $d)
+							{
+								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+							}
+							
+							echo"</select><br />";
+							echo"<center><input type=\"submit\" name=\"delCategorySubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>";
+							echo"</form>";
+						?>
+					</div>
+					<div class="col-sm-4">
+						<?php 
+							echo"<form method=\"post\">";
+							echo"Name der Kategorie: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newMenuName\"><br/>";
+							echo"Übergeordnete Kategorie: <select name=\"newMenuSupercategory\">";
+							echo "<option value=\"0\">Keine übergeordnete Kategorie</option>";
+							$menues = getMenuHeaderStrings();											
+							foreach($menues as $d)
+							{
+								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+							}
+							echo "</select><br />";
+							echo"<center><input type=\"submit\" name=\"editCategorySubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>";
+							echo"</form>";
+						?>
+					</div>
+				</div>
+			</div>
+		</div>		
 	</div>
 	<div class="row" style="margin-left:15px;margin-right:15px;">
 	
@@ -586,15 +685,7 @@
 		<?php 
 				
 				//require from before is still valid in this context
-				$menues = getMenuHeaderStrings();
-								
-				echo "<select name=\"menueSelect\">";
-				
-				foreach($menues as $d)
-				{
-					echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-				}
-				echo "</select>";
+
 				
 									
 				function addmenue()
@@ -643,11 +734,14 @@
     <script>window.jQuery || document.write('<script src="./assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="./dist/js/bootstrap.min.js"></script>
 	<script src="./dist/js/bootstrap-select.js"></script>
+	<script src="./dist/js/bootstrap-datepicker.js"></script>
 	<script>
 		$(document).ready(function(){
 			$('select').selectpicker();
+			$('.datepicker').datepicker();
 		});
 	</script>
+	
 	<!--scripts handling the sql connection-->
 	<script src="./dist/js/sqlScripts.js"></script>
 
