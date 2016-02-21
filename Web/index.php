@@ -33,35 +33,34 @@
 	<!-- Google fonts -->
 	<link href='https://fonts.googleapis.com/css?family=Molle:400italic' rel='stylesheet' type='text/css'>
 	
+	<?php
+session_start();
+	//global requires and includes
+	require("./dist/php/menu.php");
+		
+	?>
   </head>
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            
-          </button>
-          <a class="navbar-brand" href="index.html">Startseite</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
-			<li><a href="products.html">Products</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-			<li><a href="admin.html">Adminbereich</a></li>
-          </ul>
-		    <div class="navbar-header" style="position: right; padding-left: 400px">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            
-				</button>
-				<a class="navbar-brand" href="anmelden.html">Anmelden / Registrieren</a>
-			</div>
-        </div>
-      </div>
-    </nav>
+	<?php 
+		//phpinfo();
+		
+		if (isset($_SESSION['username'])) {
+			$isLoggedIn = true;
+		} else {
+		   $isLoggedIn = false;
+		}
+		
+		
+		$isAdmin = false;
+		$warenkorbCount = 0;
+		$selectedItem = -1;
+		
+		
+		echoMenu($selectedItem,$isLoggedIn,$isAdmin,$warenkorbCount);
+		
+	?>
 
     <div class="container">
 		<div class="container theme-showcase" role="main" name="placeholder-banner">
@@ -72,7 +71,8 @@
 			</div>
 		</div>
 		
-		<div class="jumbotronDaten">
+	<div class="row" style="margin-left:15px;margin-right:15px;">
+		<div class="jumbotronDaten" style="position: relative; width: 45em; float: left;">
 			<div style="float: left; width: 100px; margin-top: 20px; padding-left: 50px;">
 				<img title="" src="sticker.png" alt="" width="200" height="200" />
 			</div>
@@ -83,8 +83,7 @@
 			<p>Vorbestellungen können bis zu einer Woche im Vorraus aufgegeben werden.</p>
 			<p>Bestellungen zum Ausliefern nehmen wir bis 45 Minuten vor Geschäftsschluss an.</p>
 		</div>
-		
-		<div class="jumbotronNews">
+		<div class="jumbotronNews" style="position: relative; float:right; width: 30em; margin-left: 4em;">
 			<h2>Unsere Öffnungszeiten:</h2>
 			<p>Montag bis Freitag von 11.30 Uhr - 14.00 Uhr und 17.30 Uhr - 22.30 Uhr</p>
 			<p>Samstag, Sonntag und Feiertag von 17.30 Uhr - 22.30 Uhr</p>
@@ -94,10 +93,13 @@
 			<p>Uttenreuth, Marloffstein, Bubenreuth - Liefergebühr 2,50€‚</p>
 			<p>Möhrendorf, Neunkirchen, Dormitz - Liefergebühr 3,50€</p>
 		</div>
+		
+		
+	</div>
 	
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 	
+	
+	<br><br><br>
 	</div>
 	
 	<nav class="navbar navbar-inverse navbar-fixed-bottom">

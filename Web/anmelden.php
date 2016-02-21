@@ -7,12 +7,15 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Startseite">
     <meta name="author" content="CPAA JNIK">
-    <link rel="icon" href="./favicon.ico">
+    <link rel="icon" href="../../favicon.ico">
 
     <title>Anmelden / Registrieren MacAPPLE</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./dist/css/bootstrap.css" rel="stylesheet">
+	
+	<!-- Bootstrap addon for select -->
+	<link href="./dist/css/bootstrap-select.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="./assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -33,38 +36,38 @@
 	<!-- Google fonts -->
 	<link href='https://fonts.googleapis.com/css?family=Molle:400italic' rel='stylesheet' type='text/css'>
 	
+	<!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+	
+	<?php
+	//global requires and includes
+	require("./dist/php/menu.php");
+	require("./dist/php/regi.php");
+	require("./dist/php/anmelden1.php");
+	?>
+	
   </head>
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            
-          </button>
-          <a class="navbar-brand" href="index.html">Startseite</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-			<li><a href="products.html">Products</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-			<li><a href="admin.html">Adminbereich</a></li>
-          </ul>
-		    <div class="navbar-header" style="position: right; padding-left: 400px">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            
-				</button>
-				<a class="navbar-brand" href="anmelden.html">Anmelden / Registrieren</a>
-			</div>
-        </div>
-      </div>
-    </nav>
+	<?php 
+		//phpinfo();
+				
+		$isLoggedIn = false;
+		$isAdmin = false;
+		$warenkorbCount = 0;
+		$selectedItem = -1;
+		
+		
+		echoMenu($selectedItem,$isLoggedIn,$isAdmin,$warenkorbCount);
+		
+	?>
 
     <div class="container">
-		<div class="container theme-showcase" role="main" name="placeholder-banner">
+		<div class="container theme-showcase" role="main">
 			<br>
 			<div class="jumbotron">
 				<h1>MacAPPLE</h1>
@@ -78,21 +81,26 @@
 					<h3 class="panel-title" style="font-size: 21px;font-weight: 200;"><center>Anmelden</center></h3>
 				</div>
 				<div class="panel-body">
-					<form class="form-signin">
+					<form class="form-signin" method="POST">
 						<label for="inputBenutzer" class="sr-only">Benutzername</label>
-						<input type="text" id="inputBenutzer" class="form-control" placeholder="Benutzername" required autofocus>
+						<input type="text" id="inputBenutzer" class="form-control" placeholder="Benutzername" name="inputBenutzer" required autofocus>
 						<label for="inputPassword" class="sr-only">Passwort</label>
-						<input type="password" id="inputPassword" class="form-control" placeholder="Passwort" required>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="remember-me"> Merken
-							</label>
-						</div>
-						<button class="btn btn-lg btn-primary btn-block" type="submit" style="font-size: 21px;font-weight: 200;">Anmelden</button>
+						<input type="password" id="inputPassword" class="form-control" placeholder="Passwort" name="inputPassword"  required>
+						<br>
+						<button class="btn btn-lg btn-primary btn-block" type="submit" name="anmelden" value="anmelden" style="font-size: 21px;font-weight: 200;">Anmelden</button>
 					</form>
 				</div>
 			</div>
 		</div>
+		
+		<?php
+			if (!empty($_POST['anmelden'])){
+				$inputBenutzer = htmlentities (strip_tags ($_POST['inputBenutzer']));
+				$inputPassword = htmlentities (strip_tags ($_POST['inputPassword']));
+				
+				anmelden($inputBenutzer, $inputPassword);
+			}
+		?>
 		
 		<br><br><br>
 		
@@ -102,46 +110,58 @@
 					<h3 class="panel-title" style="font-size: 21px;font-weight: 200;"><center>Registrieren</center></h3>
 				</div>
 				<div class="panel-body">
-					<form class="form-signin">
+					<form class="form-signin" method="POST">
 						<label for="inputVorname" class="sr-only">Vorname</label>
-						<input type="text" id="inputVorname" class="form-control" placeholder="Vorname" required autofocus>
+						<input type="text" id="inputVorname" class="form-control" name="inputVorname" placeholder="Vorname" required autofocus>
 						<label for="inputNachname" class="sr-only">Nachname</label>
-						<input type="text" id="inputNachname" class="form-control" placeholder="Nachname" required>
+						<input type="text" id="inputNachname" class="form-control" name="inputNachname" placeholder="Nachname" required>
 						<label for="inputStrasse" class="sr-only">Straße</label>
-						<input type="text" id="inputStrasse" class="form-control" placeholder="Straße / Hausnummer" required>
+						<input type="text" id="inputStrasse" class="form-control" name="inputStrasse" placeholder="Straße / Hausnummer" required>
 						<label for="inputPLZ" class="sr-only">PLZ</label>
-						<input type="text" id="inputPLZ" class="form-control" placeholder="PLZ" required>
+						<input type="text" id="inputPLZ" class="form-control" name="inputPLZ" placeholder="PLZ" required>
 						<label for="inputOrt" class="sr-only">Ort</label>
-						<input type="text" id="inputOrt" class="form-control" placeholder="Ort" required>
+						<input type="text" id="inputOrt" class="form-control" name="inputOrt" placeholder="Ort" required>
 						<br>
 						<label for="inputBenutzername" class="sr-only">Benutzername</label>
-						<input type="text" id="inputBenutzername" class="form-control" placeholder="Benutzername" required>
+						<input type="text" id="inputBenutzername" class="form-control" name="inputBenutzername" placeholder="Benutzername" required>
 						<label for="inputPasswortRegi" class="sr-only">Passwort</label>
-						<input type="password" id="inputPasswortRegi" class="form-control" placeholder="Passwort" required>
+						<input type="password" id="inputPasswortRegi" class="form-control" name="inputPasswortRegi" placeholder="Passwort" required>
 						<label for="inputPasswortRegiW" class="sr-only">Passwort Wiederholung</label>
-						<input type="password" id="inputPasswortRegiW" class="form-control" placeholder="Passwort Wiederholung" required>
+						<input type="password" id="inputPasswortRegiW" class="form-control" name="inputPasswortRegiW" placeholder="Passwort Wiederholung" required>
 						<br>
-						<button class="btn btn-lg btn-primary btn-block" type="submit" style="font-size: 21px;font-weight: 200;">Registrieren</button>
+						<button class="btn btn-lg btn-primary btn-block" type="submit" name="regi" value="regi" style="font-size: 21px;font-weight: 200;">Registrieren</button>
 					</form>
 				</div>
 			</div>
+			<br><br>
 		</div>
 		
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		<?php
+			if (!empty($_POST['regi'])){
+				$inputVorname = htmlentities (strip_tags ($_POST['inputVorname']));
+				$inputNachname = htmlentities (strip_tags ($_POST['inputNachname']));
+				$inputStrasse = htmlentities (strip_tags ($_POST['inputStrasse']));
+				$inputPLZ = htmlentities (strip_tags ($_POST['inputPLZ']));
+				$inputOrt = htmlentities (strip_tags ($_POST['inputOrt']));
+				$inputBenutzername = htmlentities (strip_tags ($_POST['inputBenutzername']));
+				$inputPasswortRegi = htmlentities (strip_tags ($_POST['inputPasswortRegi']));
+				$inputPasswortRegiW = htmlentities (strip_tags ($_POST['inputPasswortRegiW']));
+				
+				registrieren($inputVorname, $inputNachname, $inputStrasse, $inputPLZ, $inputOrt, $inputBenutzername, $inputPasswortRegi, $inputPasswortRegiW);
+			}
+		?>
+
+		
+	
 	
 	<nav class="navbar navbar-inverse navbar-fixed-bottom">
       <div class="container">
         <div id="navbar" class="collapse navbar-collapse">
-          <p style="margin-left: 45%; color: #FFFFFD;">Copyright © iPizza 2016</p>
+          <p style="color: #FFFFFD;" align="center">Copyright © iPizza 2016</p>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 	
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="./assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="./dist/js/bootstrap.min.js"></script>
+
   </body>
 </html>

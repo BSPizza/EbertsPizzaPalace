@@ -43,7 +43,7 @@
 		//global requires and includes
 		require("./dist/php/menu.php");
 		require("./dist/php/adminscripts.php");
-	
+		$limit = 3; //defines the limit for statistics
 		
 
 		if(!empty($_POST['newMenueSubmit']))
@@ -287,6 +287,57 @@
 			echo "</script>"; */
 		}
 	
+	
+	
+	if(!empty($_POST['newCategorySubmit']))
+		{//handle everything for a new product submit
+			$name = $_POST['newCategoryName'];
+			$super = $_POST['newCategorySupercategory'];
+			
+			//saveNewDiscount($name, $begin, $end, $discount);
+			//debug info
+			echo "<script language=\"javascript\">";
+			echo "alert(\"";
+			echo "erstelle neue Kategorie: ".$name;			
+			echo "als Unterkategorie von ".$super."";
+			echo "\");";
+			echo "</script>";
+			
+		}
+	
+		if(!empty($_POST['delCategorySubmit']))
+		{//handle everything to delete a product
+			$toDel = $_POST['delCategoryItem'];
+			
+			//delCategoryItem($toDel);
+			//debug info
+			echo "<script language=\"javascript\">";
+			echo "alert(\"";
+			echo $toDel;				
+			echo "\");";
+			echo "</script>";
+		}
+	
+		if(!empty($_POST['editCategorySubmit']))
+		{//handle everything to edit a product
+			$itemID = $_POST['editCategoryItem'];
+			$name = $_POST['editCategoryName'];
+			$superCategory = $_POST['editCategorySupercategory'];
+			
+				
+			//changeExistingDiscount($itemID,$name,$begin,$end,$discount);
+			//debug info
+			echo "<script language=\"javascript\">";
+			echo "alert(\"";
+			echo "Change ID ".$id;
+			echo "Set Name to ".$name;
+			echo "Change SuperCategory to".$superCategory;			
+			echo "\");";
+			echo "</script>";
+		}
+	
+	
+	
 	?>
 	
   </head>
@@ -329,7 +380,7 @@
 							
 							echo"<form method=\"post\">";
 							echo"Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newMenueName\"><br/>";
-							echo"Kategorie: <select name=\"newMenueCategory\">";
+							echo"Kategorie: <select name=\"newMenueCategory\" data-size=5>";
 							
 							//generate categories
 							$array = getSubCategoriesWithSuperCategories();
@@ -339,7 +390,7 @@
 							}
 						
 							echo"</select><br/>Produkte:";
-							echo"<select name=\"newMenueProducts[]\" multiple>";
+							echo"<select name=\"newMenueProducts[]\" data-size=5 multiple>";
 							
 							//generate products
 							$array = getProductsWithCategories();
@@ -358,7 +409,7 @@
 						<?php 
 							
 							echo"<form method=\"post\">";
-							echo"Menü: <select name=\"delMenueItem\">";
+							echo"Menü: <select name=\"delMenueItem\" data-size=5>";
 							
 							//generate categories
 							$array = getMenuesWithCategories();
@@ -375,7 +426,7 @@
 					<div class="col-sm-4">
 						<?php 
 							echo"<form method=\"post\">";
-							echo"Menü: <select name=\"editMenueItem\">";
+							echo"Menü: <select name=\"editMenueItem\" data-size=5>";
 							
 							//generate menues
 							$array = getMenuesWithCategories();
@@ -386,7 +437,7 @@
 						
 							echo"</select><br/>";
 							echo"Neuer Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editMenueName\"><br/>";
-							echo"Neue Kategorie: <select name=\"editMenueCategory\">";
+							echo"Neue Kategorie: <select name=\"editMenueCategory\" data-size=5>";
 							
 							//generate categories
 							$array = getSubCategoriesWithSuperCategories();
@@ -424,7 +475,7 @@
 						<?php 
 							echo"<form method=\"post\">";
 							echo"Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newProductName\"><br/>";
-							echo"Kategorie: <select name=\"newProductCategory\">";
+							echo"Kategorie: <select name=\"newProductCategory\" data-size=5>";
 							
 							//generate categories
 							$array = getSubCategoriesWithSuperCategories();
@@ -434,7 +485,7 @@
 							}
 						
 							echo"</select><br/>Zutaten:";
-							echo"<select name=\"newProductIngredients[]\" multiple>";
+							echo"<select name=\"newProductIngredients[]\" data-size=5 multiple>";
 							
 							//generate ingredients
 							$array = getIngredients();
@@ -529,7 +580,7 @@
 						<?php 
 							
 							echo"<form method=\"post\">";
-							echo"Zutat: <select name=\"delIngredientItem\">";
+							echo"Zutat: <select name=\"delIngredientItem\" data-size=5>";
 							
 							//generate ingredients
 							$array = getIngredients();
@@ -546,7 +597,7 @@
 					<div class="col-sm-4">
 						<?php 
 							echo"<form method=\"post\">";
-							echo"Produkt: <select name=\"editIngredientItem\">";
+							echo"Produkt: <select name=\"editIngredientItem\" data-size=5>";
 							
 							//generate ingredients
 							$array = getIngredients();
@@ -584,7 +635,7 @@
 					<div class="col-sm-4">					
 						<?php 
 							echo"<form method=\"post\">";
-							echo"Aktion: <select name=\"delDiscountItem\">";
+							echo"Aktion: <select name=\"delDiscountItem\" data-size=5>";
 							
 							$array = getDiscounts();
 							foreach($array as $d)
@@ -600,7 +651,7 @@
 					<div class="col-sm-4">
 						<?php 
 							echo"<form method=\"post\">";
-							echo"Aktion: <select name=\"editDiscountItem\">";
+							echo"Aktion: <select name=\"editDiscountItem\" data-size=5>";
 							
 							$array = getDiscounts();
 							foreach($array as $d)
@@ -609,10 +660,10 @@
 							}
 							
 							echo"</select><br />";
-							echo"Neuer Name der Aktion: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountName\"><br/>";
-							echo"Neues Startdatum: <input type=\"text\" class=\"datepicker form-control-nosize\" data-format=\"dd/mm/yyyy\" style=\"width:220px\" name=\"editDiscountBegin\"><br/>";
-							echo"Neues Enddatum: <input type=\"text\" class=\"datepicker form-control-nosize\" style=\"width:220px\" name=\"editDiscountEnd\"><br/>";
-							echo"Neuer Rabatt in %: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountValue\"><br/>";
+							echo"Neuer Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountName\"><br/>";
+							echo"Startdatum: <input type=\"text\" class=\"datepicker form-control-nosize\" data-format=\"dd/mm/yyyy\" style=\"width:220px\" name=\"editDiscountBegin\"><br/>";
+							echo"Enddatum: <input type=\"text\" class=\"datepicker form-control-nosize\" style=\"width:220px\" name=\"editDiscountEnd\"><br/>";
+							echo"Rabatt in %: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountValue\"><br/>";
 							echo"<center><input type=\"submit\" name=\"editDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>";
 							echo"</form>";
 						?>
@@ -629,8 +680,8 @@
 					<div class="col-sm-4">
 						<?php 
 							echo"<form method=\"post\">";
-							echo"Name der Kategorie: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newMenuName\"><br/>";
-							echo"Übergeordnete Kategorie: <select name=\"newMenuSupercategory\">";
+							echo"Name der Kategorie: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newCategoryName\"><br/>";
+							echo"Übergeordnete Kategorie: <select name=\"newCategorySupercategory\" data-size=5>";
 							echo "<option value=\"0\">Keine übergeordnete Kategorie</option>";
 							$menues = getMenuHeaderStrings();											
 							foreach($menues as $d)
@@ -646,9 +697,9 @@
 					<div class="col-sm-4">					
 						<?php 
 							echo"<form method=\"post\">";
-							echo"Kategorie: <select name=\"delDiscountItem\">";
+							echo"Kategorie: <select name=\"delCategoryItem\" data-size=5>";
 							
-							$array = getCategories();
+							$array = getCategoriesWithSuperCategories();
 							foreach($array as $d)
 							{
 								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
@@ -662,8 +713,18 @@
 					<div class="col-sm-4">
 						<?php 
 							echo"<form method=\"post\">";
-							echo"Name der Kategorie: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newMenuName\"><br/>";
-							echo"Übergeordnete Kategorie: <select name=\"newMenuSupercategory\">";
+							echo"<form method=\"post\">";
+							echo"Kategorie: <select name=\"editCategoryItem\" data-size=5>";
+							
+							$array = getCategoriesWithSuperCategories();
+							foreach($array as $d)
+							{
+								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+							}
+							
+							echo"</select><br />";
+							echo"Name der Kategorie: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editCategoryName\"><br/>";
+							echo"Übergeordnete Kategorie: <select name=\"editCategorySupercategory\" data-size=5>";
 							echo "<option value=\"0\">Keine übergeordnete Kategorie</option>";
 							$menues = getMenuHeaderStrings();											
 							foreach($menues as $d)
@@ -682,35 +743,139 @@
 	<div class="row" style="margin-left:15px;margin-right:15px;">
 	
 	<center>
-		<?php 
-				
-				//require from before is still valid in this context
+		<a href="#myModal" data-toggle="modal">
+			<button type="button" class="btn btn-sm btn-default" style="margin-left:15px;width:150px;">Statistiken anzeigen</button>
+		</a>
+		<!-- Modal HTML -->
+		<div id="myModal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Statistiken</h4>
+					</div>
+					<div class="modal-body">
+					
+					<div class="col-sm-6">
+						<?php
+						echo"
+						<center><b><h5>Top ".$limit." Produkte ".date('F')."</h5></b></center>
+						<table class=\"table table-striped\">
+							<tbody>";
+								$array = getTopProductsOfMonth($limit);
+								if($array)
+								foreach($array as $subArray)
+								{
+									echo"<tr>
+										<td>".$subArray[0]."</td>
+										<td>".$subArray[1]."</td>
+										</tr>";
+								}
+								echo"								
+							</tbody>
+						</table>
+						<br/>";
+						echo"
+						<center><b><h5>Top ".$limit." Produkte ".date('Y')."</h5></b></center>
+						<table class=\"table table-striped\">
+							<tbody>";
+								$array = getTopProductsOfYear($limit);
+								if($array)
+								foreach($array as $subArray)
+								{
+									echo"<tr>
+										<td>".$subArray[0]."</td>
+										<td>".$subArray[1]."</td>
+										</tr>";
+								}
+								echo"								
+							</tbody>
+						</table>
+						<br/>";
+						echo"
+						<center><b><h5>Top ".$limit." Produkte Gesamt</h5></b></center>
+						<table class=\"table table-striped\">
+							<tbody>";
+								$array = getTopProducts($limit);
+								if($array)
+								foreach($array as $subArray)
+								{
+									echo"<tr>
+										<td>".$subArray[0]."</td>
+										<td>".$subArray[1]."</td>
+										</tr>";
+								}
+								echo"								
+							</tbody>
+						</table>
+						<br/>";
+						?>
+					</div>
+					<div class="col-sm-6">
+						<?php
+						echo"
+						<center><b><h5>Top ".$limit." Menüs ".date('F')."</h5></b></center>
+						<table class=\"table table-striped\">
+							<tbody>";
+								$array = getTopMenuesOfMonth($limit);
+								if($array)
+								foreach($array as $subArray)
+								{
+									echo"<tr>
+										<td>".$subArray[0]."</td>
+										<td>".$subArray[1]."</td>
+										</tr>";
+								}
+								echo"								
+							</tbody>
+						</table>
+						<br/>";;
+						echo"
+						<center><b><h5>Top ".$limit." Menüs ".date('Y')."</h5></b></center>
+						<table class=\"table table-striped\">
+							<tbody>";
+								$array = getTopMenuesOfYear($limit);
+								if($array)
+								foreach($array as $subArray)
+								{
+									echo"<tr>
+										<td>".$subArray[0]."</td>
+										<td>".$subArray[1]."</td>
+										</tr>";
+								}
+								echo"								
+							</tbody>
+						</table>
+						<br/>";
+						echo"
+						<center><b><h5>Top ".$limit." Menüs Gesamt</h5></b></center>
+						<table class=\"table table-striped\">
+							<tbody>";
+								$array = getTopMenues($limit);
+								if($array)
+								foreach($array as $subArray)
+								{
+									echo"<tr>
+										<td>".$subArray[0]."</td>
+										<td>".$subArray[1]."</td>
+										</tr>";
+								}
+								echo"								
+							</tbody>
+						</table>
+						<br/>";
+						?>
+					</div>
 
-				
-									
-				function addmenue()
-				{
-					echo "<script language=\"javascript\">";
-					echo "alert(\"AddMenue called\");";
-					echo "</script>";
-				}
-				function editmenue($id)
-				{
-					echo "<script language=\"javascript\">";
-					echo "alert(\"EditMenue called\");";
-					echo "</script>";
-				}
-				function delmenue($id)
-				{
-					echo "<script language=\"javascript\">";
-					echo "alert(\"DelMenue called\");";
-					echo "</script>";
-				}
-				
-				?>
-		<button type="button" class="btn btn-sm btn-default" style="margin-right:15px;width:150px;">Kategorien bearbeiten</button>
-		<button type="button" class="btn btn-sm btn-default" style="margin-left:15px;width:150px;">Statistiken anzeigen</button>
-	
+
+					
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</center>
 	</div>
 
