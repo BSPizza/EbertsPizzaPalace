@@ -82,6 +82,10 @@ function echoMenu($selectedTabID, $isLoggedIn, $isAdmin, $warenkorbCount)
       echo "<li><a href=\"anmelden.php\">Einloggen/Registrieren</a></li>";
     }
   }
+  
+  if($isLoggedIn){
+	  echo "<li><a href=\"ausloggen.php\">Ausloggen</a></li>";
+  }
 
   echo "</ul>";
   echo "<div class=\"navbar-header\" style=\"position: right; padding-left: 400px\">";

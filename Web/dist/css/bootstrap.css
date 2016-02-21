@@ -5005,10 +5005,7 @@ a.badge:focus {
   #background-size:100% 400px;
   background-color: #C9C9C8;
   
-  position: absolute;
-  left: 800px;
-  right: 47px;
-  top: 400px;
+
   
 }
 .jumbotronNews h1,
@@ -5038,7 +5035,7 @@ a.badge:focus {
   border-radius: 6px;
 }
 .jumbotronNews .container {
-  max-width: 100%;
+  #max-width: 100%;
 }
 @media screen and (min-width: 768px) {
   .jumbotronNews {
@@ -5069,10 +5066,7 @@ a.badge:focus {
   
   background-color: #C9C9C8;
   
-  position: absolute;
-  right: 500px;
-  left: 76px;
-  top: 400px;
+
   
 }
 .jumbotronDaten h1,
@@ -5102,7 +5096,7 @@ a.badge:focus {
   border-radius: 6px;
 }
 .jumbotronDaten .container {
-  max-width: 100%;
+  #max-width: 100%;
 }
 @media screen and (min-width: 768px) {
   .jumbotronDaten {
@@ -5121,6 +5115,7 @@ a.badge:focus {
     font-size: 85px;
   }
 }
+
 
 /*****************************************************************/
 /*
@@ -7002,3 +6997,34 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+/*custom paal*/
+
+.rTable {    
+	display: table;    
+	width: 100%; 
+} 
+.rTableRow {    
+	display: table-row; 
+} 
+.rTableHeading {    
+	display: table-header-group;    
+	background-color: #ddd; 
+} 
+.rTableCell, .rTableHead {    
+	display: table-cell;    
+	padding: 3px 10px;    
+	border: 1px solid #999999; 
+} 
+.rTableHeading {    
+	display: table-header-group;    
+	background-color: #ddd;    
+	font-weight: bold; 
+} 
+.rTableFoot {    
+	display: table-footer-group;    
+	font-weight: bold;    
+	background-color: #ddd; 
+} 
+.rTableBody {    
+display: table-row-group; 
+}
