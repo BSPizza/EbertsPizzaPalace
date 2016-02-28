@@ -9,7 +9,7 @@
     <meta name="author" content="CPAA JNIK">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Anmelden / Registrieren MacAPPLE</title>
+    <title>MacAPPLE-Anmelden/Registrieren</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./dist/css/bootstrap.css" rel="stylesheet">
@@ -47,6 +47,7 @@
 	require("./dist/php/menu.php");
 	require("./dist/php/regi.php");
 	require("./dist/php/anmelden1.php");
+	require("./dist/php/cart.php");
 	?>
 	
   </head>
@@ -58,7 +59,7 @@
 				
 		$isLoggedIn = false;
 		$isAdmin = false;
-		$warenkorbCount = 0;
+		$warenkorbCount = warenkorbCount();
 		$selectedItem = -1;
 		
 		
@@ -67,13 +68,6 @@
 	?>
 
     <div class="container">
-		<div class="container theme-showcase" role="main">
-			<br>
-			<div class="jumbotron">
-				<h1>MacAPPLE</h1>
-				<br><br><br><br>
-			</div>
-		</div>
 		
 		<div style="position:relative; margin-right: 30%; margin-left: 30%; width: 500px;" class="col-sm-4">
 			<div class="panel panel-default">

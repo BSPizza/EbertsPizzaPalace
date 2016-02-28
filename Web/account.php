@@ -9,7 +9,7 @@
     <meta name="author" content="CPAA JNIK">
     <link rel="icon" href="./favicon.ico">
 
-    <title>Meine Daten MacAPPLE</title>
+    <title>MacAPPLE-Meine Daten</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./dist/css/bootstrap.css" rel="stylesheet">
@@ -46,6 +46,7 @@ session_start();
 	require("./dist/php/loeschen.php");
 	require("./dist/php/aendern.php");
 	require("./dist/php/lastOrders.php");
+	require("./dist/php/cart.php");
 		
 	?>
   </head>
@@ -60,10 +61,17 @@ session_start();
 		} else {
 		   $isLoggedIn = false;
 		}
+		if(isset($_SESSION['isAdmin']))
+		{
+			$isAdmin = $_SESSION['isAdmin'];
+		}
+		else
+		{
+			$isAdmin = false;	
+		}
 		
 		
-		$isAdmin = false;
-		$warenkorbCount = 0;
+		$warenkorbCount = warenkorbCount();
 		$selectedItem = -1;
 		
 		$benutzer = $_SESSION['username'];
@@ -73,16 +81,11 @@ session_start();
 		$daten = ladeDatenBenutzer($benutzer);
 		
 		$arrayOrders = letzteBestellungen($benutzer);
+		
+		$arrayOrdersExtended = letzteBestellungenExtended($benutzer);
 	?>
 
     <div class="container">
-		<div class="container theme-showcase" role="main" name="placeholder-banner">
-			<br>
-			<div class="jumbotron">
-				<h1>MacAPPLE</h1>
-				<br><br><br><br>
-			</div>
-		</div>
 		
 	<div class="row" style="margin-left:15px;margin-right:15px;">
 		<div class="jumbotronDaten" style="position: relative; width: 55em; float: left;">
@@ -163,7 +166,7 @@ session_start();
 			$inputPasswortNeuW = htmlentities (strip_tags ($_POST['inputPasswortNeuW']));
 			
 			aenderungenVerarbeiten($inputVorname, $inputNachname, $inputStrasse, $inputPLZ, $inputOrt, $inputAltesPasswort, $inputPasswortNeu, $inputPasswortNeuW, $benutzer);
-			//loeschen($username, $passwort);
+			
 		}
 		?>
 		
@@ -198,11 +201,18 @@ session_start();
 												<div class="rTableHead"><strong>Zusatzinformationen</strong></div>
 												<div class="rTableHead"><strong>Anzahl</strong></div>
 											</div>
+											';
+											while($result2 = mysql_fetch_assoc($arrayOrdersExtended)) {
+												if($result['ORDERID'] == $result2['ID']){
+												echo '
 											<div class="rTableRow">
-												<div class="rTableCell">John</div>
-												<div class="rTableCell">Pfeffer</div>
-												<div class="rTableCell">5</div>
+												<div class="rTableCell">'.$result2['Name'].'</div>
+												<div class="rTableCell">'.$result2['Zutaten'].'</div>
+												<div class="rTableCell">'.$result2['Amount'].'</div>
 											</div> 
+											';
+												}}
+										echo '
 										</div>
 									</div>
 									<div class="modal-footer">
@@ -214,6 +224,7 @@ session_start();
 						</div>
 						</tr>
 					';
+					mysql_data_seek($arrayOrdersExtended, 0);
 				}
 				
 			   ?>

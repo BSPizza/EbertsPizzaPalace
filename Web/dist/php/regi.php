@@ -58,13 +58,15 @@
 		$salt = '$2a$07$R.gJb2U2N.FmZ4hPp1y2CN$';
 		$passwort = crypt($inputPasswortRegi, $salt);
 		
-		$con = mysql_connect('localhost','root','');
-		mysql_select_db('ebertspizzapalace', $con);
+		//$con = mysql_connect('localhost','root','');
+		//mysql_select_db('ebertspizzapalace', $con);
+		createConnection();
 		$sql = "INSERT INTO Customers (FirstName, Lastname, Street, Zip, City, Login, Password) VALUES ('$inputVorname', '$inputNachname', '$inputStrasse', '$inputPLZ', '$inputOrt', '$inputBenutzername', '$passwort')";
 		
-		$result = mysql_query($sql, $con);
+		$result = mysql_query($sql);
 		
-		mysql_close($con);
+		//mysql_close($con);
+		closeConnection();
 		
 		echo '
 			<div id="myModal5" class="modal fade" role="dialog">

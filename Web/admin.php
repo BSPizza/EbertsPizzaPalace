@@ -9,7 +9,7 @@
     <meta name="author" content="CPAA JNIK">
     <link rel="icon" href="./favicon.ico">
 
-    <title>Anmelden / Registrieren MacAPPLE</title>
+    <title>MacAPPLE-Administration</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./dist/css/bootstrap.css" rel="stylesheet">
@@ -43,15 +43,16 @@
 		//global requires and includes
 		require("./dist/php/menu.php");
 		require("./dist/php/adminscripts.php");
+		require("./dist/php/cart.php");
 		$limit = 3; //defines the limit for statistics
-		
+		session_start();
 
 		if(!empty($_POST['newMenueSubmit']))
 		{//handle everything for a new menue submit
-			$name =$_POST['newMenueName'];
-			$cat =$_POST['newMenueCategory'];
-			$prod =$_POST['newMenueProducts'];
-			$dis =$_POST['newMenueDiscount'];
+			$name = adjustVariable($_POST['newMenueName']);
+			$cat = adjustVariable($_POST['newMenueCategory']);
+			$prod = adjustVariable($_POST['newMenueProducts']);
+			$dis = adjustVariable($_POST['newMenueDiscount']);
 			
 			saveNewMenue($name, $cat, $dis, $prod);
 			/*//debug info
@@ -75,7 +76,7 @@
 	
 		if(!empty($_POST['delMenueSubmit']))
 		{//handle everything to delete a menue
-			$toDel = $_POST['delMenueItem'];
+			$toDel = adjustVariable($_POST['delMenueItem']);
 			delMenueItem($toDel);
 			/*//debug info
 			echo "<script language=\"javascript\">";
@@ -87,11 +88,11 @@
 	
 		if(!empty($_POST['editMenueSubmit']))
 		{//handle everything to edit a menue
-			$id = $_POST['editMenueItem'];
-			$name =$_POST['editMenueName'];
-			$cat =$_POST['editMenueCategory'];
-			$prod =$_POST['editMenueProducts'];
-			$dis =$_POST['editMenueDiscount'];
+			$id = adjustVariable($_POST['editMenueItem']);
+			$name =adjustVariable($_POST['editMenueName']);
+			$cat =adjustVariable($_POST['editMenueCategory']);
+			$prod =adjustVariable($_POST['editMenueProducts']);
+			$dis =adjustVariable($_POST['editMenueDiscount']);
 	
 			changeExistingMenue($id, $name, $cat, $dis, $prod);
 			/*//debug info
@@ -117,11 +118,12 @@
 	
 		if(!empty($_POST['newProductSubmit']))
 		{//handle everything for a new product submit
-			$name =$_POST['newProductName'];
-			$cat =$_POST['newProductCategory'];
-			$ing =$_POST['newProductIngredients'];
-			$eVal =$_POST['newProductEnergyValue'];
-			$pric =$_POST['newProductPrice'];
+			$name =adjustVariable($_POST['newProductName']);
+			$cat =adjustVariable($_POST['newProductCategory']);
+			$ing =adjustVariable($_POST['newProductIngredients']);
+			$eVal =adjustVariable($_POST['newProductEnergyValue']); 
+			$pric =adjustVariable($_POST['newProductPrice']); 
+			
 
 			
 			saveNewProduct($name, $eVal, $pric, $cat, $ing);
@@ -147,7 +149,7 @@
 	
 		if(!empty($_POST['delProductSubmit']))
 		{//handle everything to delete a product
-			$toDel = $_POST['delProductItem'];
+			$toDel = adjustVariable($_POST['delProductItem']);
 			delProductItem($toDel);
 			/*//debug info
 			echo "<script language=\"javascript\">";
@@ -159,12 +161,12 @@
 	
 		if(!empty($_POST['editProductSubmit']))
 		{//handle everything to edit a product
-			$id = $_POST['editProductItem'];
-			$name =$_POST['editProductName'];
-			$cat =$_POST['editProductCategory'];
-			$ing =$_POST['editProductIngredients'];
-			$eVal =$_POST['editProductEnergyValue'];
-			$pric =$_POST['editProductPrice'];
+			$id = adjustVariable($_POST['editProductItem']);
+			$name =adjustVariable($_POST['editProductName']);
+			$cat =adjustVariable($_POST['editProductCategory']);
+			$ing = adjustVariable($_POST['editProductIngredients']);
+			$eVal =adjustVariable($_POST['editProductEnergyValue']);
+			$pric =adjustVariable($_POST['editProductPrice']);
 				
 			changeExistingProduct($id, $name, $eVal, $pric, $cat, $ing);
 			/*//debug info
@@ -191,7 +193,7 @@
 	
 		if(!empty($_POST['newIngredientSubmit']))
 		{//handle everything for a new product submit
-			$name =$_POST['newIngredientName'];
+			$name =adjustVariable($_POST['newIngredientName']);
 
 			
 			saveNewIngredient($name);
@@ -206,7 +208,7 @@
 	
 		if(!empty($_POST['delIngredientSubmit']))
 		{//handle everything to delete a product
-			$toDel = $_POST['delIngredientItem'];
+			$toDel = adjustVariable($_POST['delIngredientItem']);
 			delIngredientItem($toDel);
 			/*//debug info
 			echo "<script language=\"javascript\">";
@@ -218,8 +220,8 @@
 	
 		if(!empty($_POST['editIngredientSubmit']))
 		{//handle everything to edit a product
-			$id = $_POST['editIngredientItem'];
-			$name =$_POST['editIngredientName'];			
+			$id = adjustVariable($_POST['editIngredientItem']);
+			$name =adjustVariable($_POST['editIngredientName']);			
 				
 			changeExistingIngredient($id, $name);
 			/*//debug info
@@ -235,10 +237,10 @@
 	
 		if(!empty($_POST['newDiscountSubmit']))
 		{//handle everything for a new product submit
-			$name = $_POST['newDiscountName'];
-			$begin = $_POST['newDiscountBegin'];
-			$end = $_POST['newDiscountEnd'];
-			$discount = $_POST['newDiscountValue'];
+			$name = adjustVariable($_POST['newDiscountName']);
+			$begin = adjustVariable($_POST['newDiscountBegin']);
+			$end = adjustVariable($_POST['newDiscountEnd']);
+			$discount = adjustVariable($_POST['newDiscountValue']);
 			
 			saveNewDiscount($name, $begin, $end, $discount);
 			//debug info
@@ -255,7 +257,7 @@
 	
 		if(!empty($_POST['delDiscountSubmit']))
 		{//handle everything to delete a product
-			$toDel = $_POST['delDiscountItem'];
+			$toDel = adjustVariable($_POST['delDiscountItem']);
 			
 			delDiscountItem($toDel);
 			//debug info
@@ -268,11 +270,11 @@
 	
 		if(!empty($_POST['editDiscountSubmit']))
 		{//handle everything to edit a product
-			$itemID = $_POST['editDiscountItem'];
-			$name = $_POST['editDiscountName'];
-			$begin = $_POST['editDiscountBegin'];
-			$end = $_POST['editDiscountEnd'];
-			$discount = $_POST['editDiscountValue'];		
+			$itemID = adjustVariable($_POST['editDiscountItem']);
+			$name = adjustVariable($_POST['editDiscountName']);
+			$begin = adjustVariable($_POST['editDiscountBegin']);
+			$end = adjustVariable($_POST['editDiscountEnd']);
+			$discount = adjustVariable($_POST['editDiscountValue']);
 				
 			changeExistingDiscount($itemID,$name,$begin,$end,$discount);
 			//debug info
@@ -291,8 +293,8 @@
 	
 	if(!empty($_POST['newCategorySubmit']))
 		{//handle everything for a new product submit
-			$name = $_POST['newCategoryName'];
-			$super = $_POST['newCategorySupercategory'];
+			$name = adjustVariable($_POST['newCategoryName']);
+			$super = adjustVariable($_POST['newCategorySupercategory']);
 			
 			//saveNewDiscount($name, $begin, $end, $discount);
 			//debug info
@@ -307,7 +309,7 @@
 	
 		if(!empty($_POST['delCategorySubmit']))
 		{//handle everything to delete a product
-			$toDel = $_POST['delCategoryItem'];
+			$toDel = adjustVariable($_POST['delCategoryItem']);
 			
 			//delCategoryItem($toDel);
 			//debug info
@@ -320,9 +322,9 @@
 	
 		if(!empty($_POST['editCategorySubmit']))
 		{//handle everything to edit a product
-			$itemID = $_POST['editCategoryItem'];
-			$name = $_POST['editCategoryName'];
-			$superCategory = $_POST['editCategorySupercategory'];
+			$itemID = adjustVariable($_POST['editCategoryItem']);
+			$name = adjustVariable($_POST['editCategoryName']);
+			$superCategory = adjustVariable($_POST['editCategorySupercategory']);
 			
 				
 			//changeExistingDiscount($itemID,$name,$begin,$end,$discount);
@@ -346,28 +348,30 @@
 	<?php 
 		//phpinfo();
 				
-		$isLoggedIn = true;
-		$isAdmin = true;
-		$warenkorbCount = 0;
+		if (isset($_SESSION['username'])) {
+			$isLoggedIn = true;
+		} else {
+		   $isLoggedIn = false;
+		}
+		if(isset($_SESSION['isAdmin']))
+		{
+			$isAdmin = $_SESSION['isAdmin'];
+		}
+		else
+		{
+			$isAdmin = false;	
+		}
+				
 		$selectedItem = -3;
-		
+		$warenkorbCount = warenkorbCount();
 		
 		
 		echoMenu($selectedItem,$isLoggedIn,$isAdmin,$warenkorbCount);
 		
-		?>
-	
-	
-    <div class="row">
-		<div class="container theme-showcase" role="main" name="placeholder-banner">
-			<br>
-			<div class="jumbotron">
-				<h1>MacAPPLE</h1>
-				<br><br><br><br>
-			</div>
-		</div>
-	</div>
-
+		//disable infos for non-admins
+		if(!$isAdmin)
+		{echo"<!--";}
+	?>			
 	<div class="row" style="margin-left:15px;margin-right:15px;">
 		<div class="col-sm-12">
 			<div class="panel panel-default">
@@ -377,89 +381,118 @@
 				<div class="panel-body">
 					<div class="col-sm-4">
 						<?php 
-							
-							echo"<form method=\"post\">";
-							echo"Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newMenueName\"><br/>";
-							echo"Kategorie: <select name=\"newMenueCategory\" data-size=5>";
-							
-							//generate categories
-							$array = getSubCategoriesWithSuperCategories();
-							foreach($array as $d)
+							if($isAdmin)
 							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+								echo"<form method=\"post\">";
+								echo"<center>
+								<table>
+									<tr>
+										<td>Name: </td>
+										<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newMenueName\"><br/></td>
+									</tr>
+									<tr>
+										<td>Kategorie: </td>
+										<td><select name=\"newMenueCategory\" data-size=5>";
+										//generate categories
+										$array = getSubCategoriesWithSuperCategories();
+										foreach($array as $d)
+										{
+											echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+										}
+										echo"</select></td>
+									</tr>
+									<tr>
+										<td>Produkte:</td>
+										<td><select name=\"newMenueProducts[]\" data-size=5 multiple>";							
+										//generate products
+										$array = getProductsWithCategories();
+										foreach($array as $d)
+										{
+											echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+										}
+										echo"</select></td>
+									</tr>
+									<tr>
+										<td>Rabatt:</td>
+										<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newMenueDiscount\"></td>
+									</tr>
+								</table></center>
+								<center><input type=\"submit\" name=\"newMenueSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Hinzufügen\" /></center>
+								</form>";
 							}
-						
-							echo"</select><br/>Produkte:";
-							echo"<select name=\"newMenueProducts[]\" data-size=5 multiple>";
-							
-							//generate products
-							$array = getProductsWithCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-							
-							echo"</select><br />";
-							echo"Rabatt: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newMenueDiscount\"><br/>";
-							echo"<center><input type=\"submit\" name=\"newMenueSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Hinzufügen\" /></center>";
-							echo"</form>";
 						?>
 					</div>
 					<div class="col-sm-4">					
 						<?php 
-							
-							echo"<form method=\"post\">";
-							echo"Menü: <select name=\"delMenueItem\" data-size=5>";
-							
-							//generate categories
-							$array = getMenuesWithCategories();
-							foreach($array as $d)
+							if($isAdmin)
 							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+								echo"<form method=\"post\"><center>
+								Menü: <select name=\"delMenueItem\" data-size=5>";
+								
+								//generate categories
+								$array = getMenuesWithCategories();
+								foreach($array as $d)
+								{
+									echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+								}
+							
+								echo"</select></center><br/>						
+								<center><input type=\"submit\" name=\"delMenueSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>
+								</form>";
 							}
-						
-							echo"</select><br/>";						
-							echo"<center><input type=\"submit\" name=\"delMenueSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>";
-							echo"</form>";
 						?>
 					</div>
 					<div class="col-sm-4">
-						<?php 
-							echo"<form method=\"post\">";
-							echo"Menü: <select name=\"editMenueItem\" data-size=5>";
-							
-							//generate menues
-							$array = getMenuesWithCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>";
-							echo"Neuer Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editMenueName\"><br/>";
-							echo"Neue Kategorie: <select name=\"editMenueCategory\" data-size=5>";
-							
-							//generate categories
-							$array = getSubCategoriesWithSuperCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>Produkte:";
-							echo"<select name=\"editMenueProducts[]\" multiple>";
-							
-							//generate products
-							$array = getProductsWithCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-							
-							echo"</select><br />";
-							echo"Neuer Rabatt: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editMenueDiscount\"><br/>";
-							echo"<center><input type=\"submit\" name=\"editMenueSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>";
-							echo"</form>";
+						<?php
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center><table>
+								<tr>
+									<td>Menü:</td>
+									<td><select name=\"editMenueItem\" data-size=5>";
+									//generate menues
+									$array = getMenuesWithCategories();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Neuer Name:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editMenueName\"></td>
+								</tr>
+								<tr>
+									<td>Neue Kategorie:</td>
+									<td><select name=\"editMenueCategory\" data-size=5>";
+									//generate categories
+									$array = getSubCategoriesWithSuperCategories();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Produkte:</td>
+									<td><select name=\"editMenueProducts[]\" multiple>";
+									//generate products
+									$array = getProductsWithCategories();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Neuer Rabatt:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editMenueDiscount\"></td>
+								</tr>
+							</table></center>
+							<center><input type=\"submit\" name=\"editMenueSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 				</div>
@@ -473,90 +506,129 @@
 				<div class="panel-body">
 					<div class="col-sm-4">
 						<?php 
-							echo"<form method=\"post\">";
-							echo"Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newProductName\"><br/>";
-							echo"Kategorie: <select name=\"newProductCategory\" data-size=5>";
-							
-							//generate categories
-							$array = getSubCategoriesWithSuperCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>Zutaten:";
-							echo"<select name=\"newProductIngredients[]\" data-size=5 multiple>";
-							
-							//generate ingredients
-							$array = getIngredients();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-							
-							echo"</select><br />";
-							echo"Energiewert: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newProductEnergyValue\"><br/>";
-							echo"Price: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newProductPrice\"><br/>";
-							echo"<center><input type=\"submit\" name=\"newProductSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Hinzufügen\" /></center>";
-							echo"</form>";
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center><table>
+								<tr>
+									<td>Name:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newProductName\"></td>
+								</tr>
+								<tr>
+									<td>Kategorie:</td>
+									<td><select name=\"newProductCategory\" data-size=5>";
+									//generate categories
+									$array = getSubCategoriesWithSuperCategories();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Zutaten:</td>
+									<td><select name=\"newProductIngredients[]\" data-size=5 multiple>";
+									//generate ingredients
+									$array = getIngredients();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Energiewert:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newProductEnergyValue\"></td>
+								</tr>
+								<tr>
+									<td>Price:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newProductPrice\"></td>
+								</tr>
+							</table></center>
+							<center><input type=\"submit\" name=\"newProductSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Hinzufügen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 					<div class="col-sm-4">					
 						<?php 
-							
-							echo"<form method=\"post\">";
-							echo"Produkt: <select name=\"delProductItem\">";
-							
-							//generate categories
-							$array = getProductsWithCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>";						
-							echo"<center><input type=\"submit\" name=\"delProductSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>";
-							echo"</form>";
+						if($isAdmin)
+						{	
+							echo"<form method=\"post\">
+							<center>
+							<table>
+								<tr>
+									<td>Produkt:</td>
+									<td><select name=\"delProductItem\">";
+									//generate categories
+									$array = getProductsWithCategories();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+							</table></center>
+							<center><input type=\"submit\" name=\"delProductSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 					<div class="col-sm-4">
 						<?php 
-							echo"<form method=\"post\">";
-							echo"Produkt: <select name=\"editProductItem\">";
-							
-							//generate products
-							$array = getProductsWithCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>";
-							echo"Neuer Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editProductName\"><br/>";
-							echo"Neue Kategorie: <select name=\"editProductCategory\">";
-							
-							//generate categories
-							$array = getSubCategoriesWithSuperCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>Zutaten:";
-							echo"<select name=\"editProductIngredients[]\" multiple>";
-							
-							//generate ingredients
-							$array = getIngredients();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-							
-							echo"</select><br />";
-							echo"Energiewert: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editProductEnergyValue\"><br/>";
-							echo"Price: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editProductPrice\"><br/>";
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center><table>
+								<tr>
+									<td>Produkt:</td>
+									<td><select name=\"editProductItem\">";
+									//generate products
+									$array = getProductsWithCategories();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Neuer Name:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editProductName\"></td>
+								</tr>
+								<tr>
+									<td>Neue Kategorie:</td>
+									<td><select name=\"editProductCategory\">";
+									//generate categories
+									$array = getSubCategoriesWithSuperCategories();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Zutaten:</td>
+									<td><select name=\"editProductIngredients[]\" multiple>";
+									//generate ingredients
+									$array = getIngredients();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Energiewert:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editProductEnergyValue\"></td>
+								</tr>
+								<tr>
+									<td>Price:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editProductPrice\"></td>
+								</tr>
+							</table></center>";
 							echo"<center><input type=\"submit\" name=\"editProductSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>";
 							echo"</form>";
+						}
 						?>
 					</div>
 				</div>
@@ -570,46 +642,71 @@
 				<div class="panel-body">
 					<div class="col-sm-4">
 						<?php 
-							echo"<form method=\"post\">";
-							echo"Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newIngredientName\"><br/>";
-							echo"<center><input type=\"submit\" name=\"newIngredientSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Hinzufügen\" /></center>";
-							echo"</form>";
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center>
+							<table>
+								<tr>
+									<td>Name:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newIngredientName\"></td>
+								</tr>
+							</table>
+							</center>
+							<center><input type=\"submit\" name=\"newIngredientSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Hinzufügen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 					<div class="col-sm-4">					
 						<?php 
-							
-							echo"<form method=\"post\">";
-							echo"Zutat: <select name=\"delIngredientItem\" data-size=5>";
-							
-							//generate ingredients
-							$array = getIngredients();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>";						
-							echo"<center><input type=\"submit\" name=\"delIngredientSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>";
-							echo"</form>";
+						if($isAdmin)
+						{	
+							echo"<form method=\"post\">
+							<center>
+							<table>
+								<tr>
+									<td>Zutat:</td>
+									<td><select name=\"delIngredientItem\" data-size=5>";
+									//generate ingredients
+									$array = getIngredients();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+							</table></center>
+							<center><input type=\"submit\" name=\"delIngredientSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 					<div class="col-sm-4">
 						<?php 
-							echo"<form method=\"post\">";
-							echo"Produkt: <select name=\"editIngredientItem\" data-size=5>";
-							
-							//generate ingredients
-							$array = getIngredients();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-						
-							echo"</select><br/>";
-							echo"Neuer Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editIngredientName\"><br/>";
-							echo"<center><input type=\"submit\" name=\"editIngredientSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>";
-							echo"</form>";
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center><table>
+								<tr>
+									<td>Produkt:</td>
+									<td><select name=\"editIngredientItem\" data-size=5>";
+									//generate ingredients
+									$array = getIngredients();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Neuer Name:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editIngredientName\"></td>
+								</tr>
+							</table></center> 
+							<center><input type=\"submit\" name=\"editIngredientSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 				</div>
@@ -623,49 +720,94 @@
 				<div class="panel-body">
 					<div class="col-sm-4">
 						<?php 
-							echo"<form method=\"post\">";
-							echo"Name der Aktion: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newDiscountName\"><br/>";
-							echo"Startdatum: <input type=\"text\" class=\"datepicker form-control-nosize\" data-format=\"dd/mm/yyyy\" style=\"width:220px\" name=\"newDiscountBegin\"><br/>";
-							echo"Enddatum: <input type=\"text\" class=\"datepicker form-control-nosize\" style=\"width:220px\" name=\"newDiscountEnd\"><br/>";
-							echo"Rabatt in %: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newDiscountValue\"><br/>";
-							echo"<center><input type=\"submit\" name=\"newDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Speichern\" /></center>";
-							echo"</form>";
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center><table>
+								<tr>
+									<td>Name der Aktion:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newDiscountName\"></td>
+								</tr>
+								<tr>
+									<td>Startdatum:</td>
+									<td><input type=\"text\" class=\"datepicker form-control-nosize\" data-format=\"dd/mm/yyyy\" style=\"width:220px\" name=\"newDiscountBegin\"></td>
+								</tr>
+								<tr>
+									<td>Enddatum:</td>
+									<td><input type=\"text\" class=\"datepicker form-control-nosize\" style=\"width:220px\" name=\"newDiscountEnd\"></td>
+								</tr>
+								<tr>
+									<td>Rabatt in %:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newDiscountValue\"></td>
+								</tr>
+							</table></center>
+							<center><input type=\"submit\" name=\"newDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Speichern\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 					<div class="col-sm-4">					
 						<?php 
-							echo"<form method=\"post\">";
-							echo"Aktion: <select name=\"delDiscountItem\" data-size=5>";
-							
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center>
+							<table>
+							<tr>
+							<td>Aktion:</td>
+							<td><select name=\"delDiscountItem\" data-size=5>";
 							$array = getDiscounts();
 							foreach($array as $d)
 							{
 								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
 							}
-							
-							echo"</select><br />";
-							echo"<center><input type=\"submit\" name=\"delDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>";
-							echo"</form>";
+							echo"</select></td>
+							</tr>
+							</table></center>
+							<center><input type=\"submit\" name=\"delDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 					<div class="col-sm-4">
 						<?php 
-							echo"<form method=\"post\">";
-							echo"Aktion: <select name=\"editDiscountItem\" data-size=5>";
-							
-							$array = getDiscounts();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-							
-							echo"</select><br />";
-							echo"Neuer Name: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountName\"><br/>";
-							echo"Startdatum: <input type=\"text\" class=\"datepicker form-control-nosize\" data-format=\"dd/mm/yyyy\" style=\"width:220px\" name=\"editDiscountBegin\"><br/>";
-							echo"Enddatum: <input type=\"text\" class=\"datepicker form-control-nosize\" style=\"width:220px\" name=\"editDiscountEnd\"><br/>";
-							echo"Rabatt in %: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountValue\"><br/>";
-							echo"<center><input type=\"submit\" name=\"editDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>";
-							echo"</form>";
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center><table>
+								<tr>
+									<td>Aktion:</td>
+									<td><select name=\"editDiscountItem\" data-size=5>";
+									
+									
+									$array = getDiscounts();
+									foreach($array as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									
+									echo"</select></td>
+								</tr>
+								<tr>
+									<td>Neuer Name:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountName\"></td>
+								</tr>
+								<tr>
+									<td>Startdatum:</td>
+									<td><input type=\"text\" class=\"datepicker form-control-nosize\" data-format=\"dd/mm/yyyy\" style=\"width:220px\" name=\"editDiscountBegin\"></td>
+								</tr>
+								<tr>
+									<td>Enddatum:</td>
+									<td><input type=\"text\" class=\"datepicker form-control-nosize\" style=\"width:220px\" name=\"editDiscountEnd\"></td>
+								</tr>
+								<tr>
+									<td>Rabatt in %:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editDiscountValue\"></td>
+								</tr>
+							</table></center>
+							<center><input type=\"submit\" name=\"editDiscountSubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 				</div>
@@ -679,61 +821,89 @@
 				<div class="panel-body">
 					<div class="col-sm-4">
 						<?php 
-							echo"<form method=\"post\">";
-							echo"Name der Kategorie: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newCategoryName\"><br/>";
-							echo"Übergeordnete Kategorie: <select name=\"newCategorySupercategory\" data-size=5>";
-							echo "<option value=\"0\">Keine übergeordnete Kategorie</option>";
-							$menues = getMenuHeaderStrings();											
-							foreach($menues as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-							echo "</select><br />";
-							
-							echo"<center><input type=\"submit\" name=\"newCategorySubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Speichern\" /></center>";
-							echo"</form>";
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center><table>
+								<tr>
+									<td>Name der Kategorie:</td>
+									<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"newCategoryName\"></td>
+								</tr>
+								<tr>
+									<td>Übergeordnete Kategorie:</td>
+									<td><select name=\"newCategorySupercategory\" data-size=5>
+									<option value=\"0\">Keine übergeordnete Kategorie</option>";
+									$menues = getMenuHeaderStrings();											
+									foreach($menues as $d)
+									{
+										echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+									}
+									echo "</select></td>
+								</tr>
+							</table>
+							</center>
+							<center><input type=\"submit\" name=\"newCategorySubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Speichern\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 					<div class="col-sm-4">					
 						<?php 
-							echo"<form method=\"post\">";
-							echo"Kategorie: <select name=\"delCategoryItem\" data-size=5>";
-							
-							$array = getCategoriesWithSuperCategories();
-							foreach($array as $d)
-							{
-								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
-							}
-							
-							echo"</select><br />";
-							echo"<center><input type=\"submit\" name=\"delCategorySubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>";
-							echo"</form>";
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center><table>
+								<tr>
+								<td>Kategorie:</td>
+								<td><select name=\"delCategoryItem\" data-size=5>";
+								$array = getCategoriesWithSuperCategories();
+								foreach($array as $d)
+								{
+									echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
+								}
+								echo"</select></td>
+								</tr>
+							</table></center>
+							<center><input type=\"submit\" name=\"delCategorySubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Löschen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 					<div class="col-sm-4">
 						<?php 
-							echo"<form method=\"post\">";
-							echo"<form method=\"post\">";
-							echo"Kategorie: <select name=\"editCategoryItem\" data-size=5>";
-							
+						if($isAdmin)
+						{
+							echo"<form method=\"post\">
+							<center><table>
+							<tr>
+							<td>Kategorie:</td>
+							<td><select name=\"editCategoryItem\" data-size=5>";
 							$array = getCategoriesWithSuperCategories();
 							foreach($array as $d)
 							{
 								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
 							}
-							
-							echo"</select><br />";
-							echo"Name der Kategorie: <input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editCategoryName\"><br/>";
-							echo"Übergeordnete Kategorie: <select name=\"editCategorySupercategory\" data-size=5>";
-							echo "<option value=\"0\">Keine übergeordnete Kategorie</option>";
+							echo"</select></td>
+							</tr>
+							<tr>
+							<td>Name der Kategorie:</td>
+							<td><input type=\"text\" class=\"form-control-nosize\" style=\"width:220px\" name=\"editCategoryName\"></td>
+							</tr>
+							<tr>
+							<td>Übergeordnete Kategorie:</td>
+							<td><select name=\"editCategorySupercategory\" data-size=5>
+							<option value=\"0\">Keine übergeordnete Kategorie</option>";
 							$menues = getMenuHeaderStrings();											
 							foreach($menues as $d)
 							{
 								echo "<option value=\"".$d[0]."\">".$d[1]."</option>";
 							}
-							echo "</select><br />";
-							echo"<center><input type=\"submit\" name=\"editCategorySubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>";
-							echo"</form>";
+							echo "</select></td>
+							</tr>
+							</table></center>
+							<center><input type=\"submit\" name=\"editCategorySubmit\" class=\"btn btn-sm btn-default\" style=\"margin-top:10px;\" value=\"Ersetzen\" /></center>
+							</form>";
+						}
 						?>
 					</div>
 				</div>
@@ -755,130 +925,137 @@
 						<h4 class="modal-title">Statistiken</h4>
 					</div>
 					<div class="modal-body">
-					
-					<div class="col-sm-6">
-						<?php
-						echo"
-						<center><b><h5>Top ".$limit." Produkte ".date('F')."</h5></b></center>
-						<table class=\"table table-striped\">
-							<tbody>";
-								$array = getTopProductsOfMonth($limit);
-								if($array)
-								foreach($array as $subArray)
-								{
-									echo"<tr>
-										<td>".$subArray[0]."</td>
-										<td>".$subArray[1]."</td>
-										</tr>";
-								}
-								echo"								
-							</tbody>
-						</table>
-						<br/>";
-						echo"
-						<center><b><h5>Top ".$limit." Produkte ".date('Y')."</h5></b></center>
-						<table class=\"table table-striped\">
-							<tbody>";
-								$array = getTopProductsOfYear($limit);
-								if($array)
-								foreach($array as $subArray)
-								{
-									echo"<tr>
-										<td>".$subArray[0]."</td>
-										<td>".$subArray[1]."</td>
-										</tr>";
-								}
-								echo"								
-							</tbody>
-						</table>
-						<br/>";
-						echo"
-						<center><b><h5>Top ".$limit." Produkte Gesamt</h5></b></center>
-						<table class=\"table table-striped\">
-							<tbody>";
-								$array = getTopProducts($limit);
-								if($array)
-								foreach($array as $subArray)
-								{
-									echo"<tr>
-										<td>".$subArray[0]."</td>
-										<td>".$subArray[1]."</td>
-										</tr>";
-								}
-								echo"								
-							</tbody>
-						</table>
-						<br/>";
-						?>
-					</div>
-					<div class="col-sm-6">
-						<?php
-						echo"
-						<center><b><h5>Top ".$limit." Menüs ".date('F')."</h5></b></center>
-						<table class=\"table table-striped\">
-							<tbody>";
-								$array = getTopMenuesOfMonth($limit);
-								if($array)
-								foreach($array as $subArray)
-								{
-									echo"<tr>
-										<td>".$subArray[0]."</td>
-										<td>".$subArray[1]."</td>
-										</tr>";
-								}
-								echo"								
-							</tbody>
-						</table>
-						<br/>";;
-						echo"
-						<center><b><h5>Top ".$limit." Menüs ".date('Y')."</h5></b></center>
-						<table class=\"table table-striped\">
-							<tbody>";
-								$array = getTopMenuesOfYear($limit);
-								if($array)
-								foreach($array as $subArray)
-								{
-									echo"<tr>
-										<td>".$subArray[0]."</td>
-										<td>".$subArray[1]."</td>
-										</tr>";
-								}
-								echo"								
-							</tbody>
-						</table>
-						<br/>";
-						echo"
-						<center><b><h5>Top ".$limit." Menüs Gesamt</h5></b></center>
-						<table class=\"table table-striped\">
-							<tbody>";
-								$array = getTopMenues($limit);
-								if($array)
-								foreach($array as $subArray)
-								{
-									echo"<tr>
-										<td>".$subArray[0]."</td>
-										<td>".$subArray[1]."</td>
-										</tr>";
-								}
-								echo"								
-							</tbody>
-						</table>
-						<br/>";
-						?>
-					</div>
-
-
-					
-					
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+						<div class="col-sm-6">
+							<?php
+							echo"
+							<center><b><h5>Top ".$limit." Produkte ".date('F')."</h5></b></center>
+							<table class=\"table table-striped\">
+								<tbody>";
+									$array = getTopProductsOfMonth($limit);
+									if($array)
+									foreach($array as $subArray)
+									{
+										echo"<tr>
+											<td>".$subArray[0]."</td>
+											<td>".$subArray[1]."</td>
+											</tr>";
+									}
+									echo"								
+								</tbody>
+							</table>
+							<br/>";
+							echo"
+							<center><b><h5>Top ".$limit." Produkte ".date('Y')."</h5></b></center>
+							<table class=\"table table-striped\">
+								<tbody>";
+									$array = getTopProductsOfYear($limit);
+									if($array)
+									foreach($array as $subArray)
+									{
+										echo"<tr>
+											<td>".$subArray[0]."</td>
+											<td>".$subArray[1]."</td>
+											</tr>";
+									}
+									echo"								
+								</tbody>
+							</table>
+							<br/>";
+							echo"
+							<center><b><h5>Top ".$limit." Produkte Gesamt</h5></b></center>
+							<table class=\"table table-striped\">
+								<tbody>";
+									$array = getTopProducts($limit);
+									if($array)
+									foreach($array as $subArray)
+									{
+										echo"<tr>
+											<td>".$subArray[0]."</td>
+											<td>".$subArray[1]."</td>
+											</tr>";
+									}
+									echo"								
+								</tbody>
+							</table>
+							<br/>";
+							?>
+						</div>
+						<div class="col-sm-6">
+							<?php
+							echo"
+							<center><b><h5>Top ".$limit." Menüs ".date('F')."</h5></b></center>
+							<table class=\"table table-striped\">
+								<tbody>";
+									$array = getTopMenuesOfMonth($limit);
+									if($array)
+									foreach($array as $subArray)
+									{
+										echo"<tr>
+											<td>".$subArray[0]."</td>
+											<td>".$subArray[1]."</td>
+											</tr>";
+									}
+									echo"								
+								</tbody>
+							</table>
+							<br/>";;
+							echo"
+							<center><b><h5>Top ".$limit." Menüs ".date('Y')."</h5></b></center>
+							<table class=\"table table-striped\">
+								<tbody>";
+									$array = getTopMenuesOfYear($limit);
+									if($array)
+									foreach($array as $subArray)
+									{
+										echo"<tr>
+											<td>".$subArray[0]."</td>
+											<td>".$subArray[1]."</td>
+											</tr>";
+									}
+									echo"								
+								</tbody>
+							</table>
+							<br/>";
+							echo"
+							<center><b><h5>Top ".$limit." Menüs Gesamt</h5></b></center>
+							<table class=\"table table-striped\">
+								<tbody>";
+									$array = getTopMenues($limit);
+									if($array)
+									foreach($array as $subArray)
+									{
+										echo"<tr>
+											<td>".$subArray[0]."</td>
+											<td>".$subArray[1]."</td>
+											</tr>";
+									}
+									echo"								
+								</tbody>
+							</table>
+							<br/>";
+							?>
+						</div>
+	
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</center>
 	</div>
-
+	<?php 
+		if(!$isAdmin)
+		{
+			echo"-->";
+			echo "
+			<div class=\"row\" style=\"margin-left:15px;margin-right:15px;\">
+				<center><h1>Access denied!</h1></center>
+			</div>
+			";
+		}
+	?>	
 	<br/>
 	<br/>
 	<br/>

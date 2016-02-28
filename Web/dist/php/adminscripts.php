@@ -546,7 +546,7 @@
 		$retArray = array();
 		createConnection();
 		
-		$statement = "SELECT p.Name, COUNT(po.ProductID) AS 'Count' FROM xProductOrder po INNER JOIN Orders o ON po.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Products p ON po.ProductID = p.ID WHERE MONTH(o.Date) = MONTH(NOW()) GROUP BY po.ProductID ORDER BY COUNT(po.ProductID) DESC LIMIT ".$limit.";";
+		$statement = "SELECT p.Name, SUM(po.Amount) AS 'Count' FROM xProductOrder po INNER JOIN Orders o ON po.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Products p ON po.ProductID = p.ID WHERE MONTH(o.Date) = MONTH(NOW()) GROUP BY po.ProductID ORDER BY COUNT(po.ProductID) DESC LIMIT ".$limit.";";
 		$result = mysql_query($statement);
 		
 		while($row = mysql_fetch_array($result))
@@ -555,6 +555,8 @@
 		}
 		
 		closeConnection();
+		
+		return $retArray;
 	}
 	
 	function getTopProductsOfYear($limit)
@@ -562,7 +564,7 @@
 		$retArray = array();
 		createConnection();
 		
-		$statement = "SELECT p.Name, COUNT(po.ProductID) AS 'Count' FROM xProductOrder po INNER JOIN Orders o ON po.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Products p ON po.ProductID = p.ID WHERE YEAR(o.Date) = YEAR(NOW()) GROUP BY po.ProductID ORDER BY COUNT(po.ProductID) DESC LIMIT ".$limit.";";
+		$statement = "SELECT p.Name, SUM(po.Amount) AS 'Count' FROM xProductOrder po INNER JOIN Orders o ON po.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Products p ON po.ProductID = p.ID WHERE YEAR(o.Date) = YEAR(NOW()) GROUP BY po.ProductID ORDER BY COUNT(po.ProductID) DESC LIMIT ".$limit.";";
 		$result = mysql_query($statement);
 		
 		while($row = mysql_fetch_array($result))
@@ -571,6 +573,8 @@
 		}
 		
 		closeConnection();
+		
+		return $retArray;
 	}
 	
 	function getTopProducts($limit)
@@ -578,7 +582,7 @@
 		$retArray = array();
 		createConnection();
 		
-		$statement = "SELECT p.Name, COUNT(po.ProductID) AS 'Count' FROM xProductOrder po INNER JOIN Orders o ON po.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Products p ON po.ProductID = p.ID GROUP BY po.ProductID ORDER BY COUNT(po.ProductID) DESC LIMIT ".$limit.";";
+		$statement = "SELECT p.Name, SUM(po.Amount) AS 'Count' FROM xProductOrder po INNER JOIN Orders o ON po.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Products p ON po.ProductID = p.ID GROUP BY po.ProductID ORDER BY COUNT(po.ProductID) DESC LIMIT ".$limit.";";
 		$result = mysql_query($statement);
 		
 		while($row = mysql_fetch_array($result))
@@ -587,6 +591,8 @@
 		}
 		
 		closeConnection();
+		
+		return $retArray;
 	}
 	
 	function getTopMenuesOfMonth($limit)
@@ -594,7 +600,7 @@
 		$retArray = array();
 		createConnection();
 		
-		$statement = "SELECT m.Name, COUNT(mo.MenueID) AS 'Count' FROM xMenueOrder mo INNER JOIN Orders o ON mo.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Menues m ON mo.MenueID = m.ID WHERE MONTH(o.Date) = MONTH(NOW()) GROUP BY mo.MenueID ORDER BY COUNT(mo.MenueID) LIMIT ".$limit.";";
+		$statement = "SELECT m.Name, SUM(mo.Amount) AS 'Count' FROM xMenueOrder mo INNER JOIN Orders o ON mo.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Menues m ON mo.MenueID = m.ID WHERE MONTH(o.Date) = MONTH(NOW()) GROUP BY mo.MenueID ORDER BY COUNT(mo.MenueID) LIMIT ".$limit.";";
 		$result = mysql_query($statement);
 		
 		while($row = mysql_fetch_array($result))
@@ -603,6 +609,8 @@
 		}
 		
 		closeConnection();
+		
+		return $retArray;
 	}
 	
 	function getTopMenuesOfYear($limit)
@@ -610,7 +618,7 @@
 		$retArray = array();
 		createConnection();
 		
-		$statement = "SELECT m.Name, COUNT(mo.MenueID) AS 'Count' FROM xMenueOrder mo INNER JOIN Orders o ON mo.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Menues m ON mo.MenueID = m.ID WHERE YEAR(o.Date) = YEAR(NOW()) GROUP BY mo.MenueID ORDER BY COUNT(mo.MenueID) LIMIT ".$limit.";";
+		$statement = "SELECT m.Name, SUM(mo.Amount) AS 'Count' FROM xMenueOrder mo INNER JOIN Orders o ON mo.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Menues m ON mo.MenueID = m.ID WHERE YEAR(o.Date) = YEAR(NOW()) GROUP BY mo.MenueID ORDER BY COUNT(mo.MenueID) LIMIT ".$limit.";";
 		$result = mysql_query($statement);
 		
 		while($row = mysql_fetch_array($result))
@@ -619,6 +627,8 @@
 		}
 		
 		closeConnection();
+		
+		return $retArray;
 	}
 	
 	function getTopMenues($limit)
@@ -626,7 +636,7 @@
 		$retArray = array();
 		createConnection();
 		
-		$statement = "SELECT m.Name, COUNT(mo.MenueID) AS 'Count' FROM xMenueOrder mo INNER JOIN Orders o ON mo.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Menues m ON mo.MenueID = m.ID GROUP BY mo.MenueID ORDER BY COUNT(mo.MenueID) LIMIT ".$limit.";";
+		$statement = "SELECT m.Name, SUM(mo.Amount) AS 'Count' FROM xMenueOrder mo INNER JOIN Orders o ON mo.OrderID = o.ID INNER JOIN Invoices i ON o.ID = i.OrderID INNER JOIN Menues m ON mo.MenueID = m.ID GROUP BY mo.MenueID ORDER BY COUNT(mo.MenueID) LIMIT ".$limit.";";
 		$result = mysql_query($statement);
 		
 		while($row = mysql_fetch_array($result))
@@ -635,6 +645,8 @@
 		}
 		
 		closeConnection();
+		
+		return $retArray;
 	}
 	
 	?>

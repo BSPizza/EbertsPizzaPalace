@@ -46,14 +46,16 @@
 	
 	function BenutzernameCheck($inputBenutzername)
 	{
-		$con = mysql_connect('localhost','root','');
-		mysql_select_db('ebertspizzapalace', $con);
+		createConnection();
+		//$con = mysql_connect('localhost','root','');
+		//mysql_select_db('ebertspizzapalace', $con);
 		$sql = "SELECT Login FROM Customers WHERE Login = '$inputBenutzername'";
 		$result = mysql_query($sql, $con);
 			 
 		$count = mysql_num_rows($result);
-				
-		mysql_close($con);
+			
+		closeConnection();
+		//mysql_close($con);
 				
 		return $count;
 	}

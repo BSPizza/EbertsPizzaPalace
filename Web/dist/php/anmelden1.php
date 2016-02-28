@@ -1,8 +1,8 @@
 <?php
-session_start();
+	session_start();
+	//require("mysql.php");
 	
 	function anmelden($inputBenutzer, $inputPassword){
-		
 		$benutzerCheck = true;
 		
 		if (BenutzernameCheck2($inputBenutzer) == 0){
@@ -31,19 +31,22 @@ session_start();
 		}
 		
 		if ($benutzerCheck){
-			$con = mysql_connect('localhost','root','');
-			mysql_select_db('ebertspizzapalace', $con);
-			$sql = "SELECT Password, IsDeleted FROM Customers WHERE Login = '$inputBenutzer'";
+			createConnection();
+			//$con = mysql_connect('localhost','root','');
+			//mysql_select_db('ebertspizzapalace', $con);
+			$sql = "SELECT Password, IsDeleted, IsAdmin FROM Customers WHERE Login = '$inputBenutzer'";
 				
-			$result = mysql_query($sql, $con);
+			$result = mysql_query($sql);
 			
 			$passwort = mysql_result($result, 0, 0);
 			$geloescht = mysql_result($result, 0, 'IsDeleted');
-			
-			mysql_close($con);
+			$isAdmin = mysql_result($result,0,'IsAdmin');
+			//mysql_close($con);
+			closeConnection();
 			
 			if (crypt($inputPassword, $passwort) == $passwort AND $geloescht != "1"){
 				$_SESSION['username']=$inputBenutzer;
+				$_SESSION['isAdmin']=$isAdmin;
 				echo '
 				<script type="text/javascript">
 					window.location.href=\'index.php\';
@@ -77,14 +80,16 @@ session_start();
 	}
 	
 	function BenutzernameCheck2($inputBenutzer) {
-		$con = mysql_connect('localhost','root','');
-		mysql_select_db('ebertspizzapalace', $con);
+		createConnection();
+		//$con = mysql_connect('localhost','root','');
+		//mysql_select_db('ebertspizzapalace', $con);
 		$sql = "SELECT Login FROM Customers WHERE Login = '$inputBenutzer'";
-		$result = mysql_query($sql, $con);
+		$result = mysql_query($sql);
 			 
 		$count = mysql_num_rows($result);
 				
-		mysql_close($con);
+		//mysql_close($con);
+		closeConnection();
 				
 		return $count;
 	}

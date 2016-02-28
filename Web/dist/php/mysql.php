@@ -51,7 +51,38 @@ function getMenuHeaderStrings()
 }
 
 
+function adjustVariable($variable)
+{
+	$cleanVariable;
+	
+	//problematic types for injections etc are string and array of strings, possibly object but not sure about that
+	if(is_string($variable))
+	{
+		$cleanVariable = htmlentities (strip_tags ($variable));
+	}
+	else if(is_array($variable))
+	{
+		$cleanVariable = arrayAdjust($variable);
+	}
+	
+	return $cleanVariable;
+}
 
-
+function arrayAdjust($array)
+{
+	for($i = 0; $i < count($array); $i++)
+	{
+		if(is_string($array[$i]))
+		{
+			$array[$i] = htmlentities (strip_tags ($array[$i]));
+		}
+		else if(is_array($array[$i]))
+		{
+			$array[$i] = arrayAdjust($array[$i]);
+		}
+	}
+	
+	return $array;
+}
 
 ?>

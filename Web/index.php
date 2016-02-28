@@ -9,7 +9,7 @@
     <meta name="author" content="CPAA JNIK">
     <link rel="icon" href="./favicon.ico">
 
-    <title>Startseite MacAPPLE</title>
+    <title>Willkommen bei MacAPPLE</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./dist/css/bootstrap.css" rel="stylesheet">
@@ -34,10 +34,11 @@
 	<link href='https://fonts.googleapis.com/css?family=Molle:400italic' rel='stylesheet' type='text/css'>
 	
 	<?php
-session_start();
+	session_start();
 	//global requires and includes
 	require("./dist/php/menu.php");
-		
+	require("./dist/php/cart.php");		
+	
 	?>
   </head>
 
@@ -51,10 +52,17 @@ session_start();
 		} else {
 		   $isLoggedIn = false;
 		}
+		if(isset($_SESSION['isAdmin']))
+		{
+			$isAdmin = $_SESSION['isAdmin'];
+		}
+		else
+		{
+			$isAdmin = false;	
+		}
 		
 		
-		$isAdmin = false;
-		$warenkorbCount = 0;
+		$warenkorbCount = warenkorbCount();
 		$selectedItem = -1;
 		
 		
@@ -63,13 +71,7 @@ session_start();
 	?>
 
     <div class="container">
-		<div class="container theme-showcase" role="main" name="placeholder-banner">
-			<br>
-			<div class="jumbotron">
-				<h1>MacAPPLE</h1>
-				<br><br><br><br>
-			</div>
-		</div>
+
 		
 	<div class="row" style="margin-left:15px;margin-right:15px;">
 		<div class="jumbotronDaten" style="position: relative; width: 45em; float: left;">

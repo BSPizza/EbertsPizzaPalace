@@ -9,7 +9,7 @@
     <meta name="author" content="CPAA JNIK">
     <link rel="icon" href="./favicon.ico">
 
-    <title>Anmelden / Registrieren MacAPPLE</title>
+    <title>MacAPPLE-Produkte</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./dist/css/bootstrap.css" rel="stylesheet">
@@ -33,61 +33,159 @@
 	<!-- Google fonts -->
 	<link href='https://fonts.googleapis.com/css?family=Molle:400italic' rel='stylesheet' type='text/css'>
 	
+	<!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+    <script>window.jQuery || document.write('<script src="./assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="./dist/js/bootstrap.js"></script>
+	
+	<?php
+session_start();
+	//global requires and includes
+	require("./dist/php/menu.php");
+	require("./dist/php/products.php");
+	require("./dist/php/cart.php");
+	
+	?>
   </head>
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            
-          </button>
-          <a class="navbar-brand" href="index.html">Startseite</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-			<li class="active"><a href="products.html">Products</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-		    <div class="navbar-header" style="position: right; padding-left: 500px">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            
-				</button>
-				<a class="navbar-brand" href="anmelden.html">Anmelden / Registrieren</a>
-			</div>
-        </div>
-      </div>
-    </nav>
-	
+	<?php 
+		//phpinfo();
+		
+		if (isset($_SESSION['username'])) {
+			$isLoggedIn = true;
+		} else {
+		   $isLoggedIn = false;
+		}
+		if(isset($_SESSION['isAdmin']))
+		{
+			$isAdmin = $_SESSION['isAdmin'];
+		}
+		else
+		{
+			$isAdmin = false;	
+		}
+		
+		$warenkorbCount = warenkorbCount();				
+		$ID = $_GET["id"];
+		
+		echoMenu($ID,$isLoggedIn,$isAdmin,$warenkorbCount);
+		$arraySuperKategorien = ladeSuperKategorien($ID);
+	?>
+
     <div class="container">
-		<div class="container theme-showcase" role="main" name="placeholder-banner">
-			<br>
-			<div class="jumbotron">
-				<h1>MacAPPLE</h1>
-				<br><br><br><br>
-			</div>
-		</div>
+
 		
-<ul class="nav nav-tabs" id="myTab">
-  <li class="active"><a href="#home">Home</a></li>
-  <li><a href="#profile" id="profile">Unterkategorie1</a></li>
-  <li><a href="#messages"id="messages" >Unterkategorie2</a></li>
-  <li><a href="#settings" id="settings" >Unterkategorie3</a></li>
-</ul>
- 
-<div class="tab-content">
-  <div class="tab-pane active" id="home">...</div>
-  <div class="tab-pane" id="profile">....</div>
-  <div class="tab-pane" id="messages">.....</div>
-  <div class="tab-pane" id="settings">......</div>
+	<div class="container">
+
+		  <ul class="nav nav-tabs">
+			<?php
+				/*
+				while($result = mysql_fetch_assoc($arraySuperKategorien)) {
+					echo '<li><a href="#'.$result['Name'].'">'.$result['Name'].'</a></li>';
+					mysql_data_seek($arraySuperKategorien, 0);
+				}*/
+				
+				foreach($arraySuperKategorien as $array)
+				{
+					echo '<li><a href="#'.$array['Name'].'">'.$array['Name'].'</a></li>';
+				}
+				
+			?>
+		  </ul>
+
+		  <div class="tab-content">
+		  
+			<?php
+				/*
+				while($result2 = mysql_fetch_assoc($arraySuperKategorien)) {
+					echo' <div id="'.$result2['Name'].'" class="tab-pane fade">
+					  <table class="table" width="100%">
+						  <thead>
+						   <tr>
+							  <th>Name</th>
+							  <th>Zusatzinformationen</th>
+							  <th>Preis</th>
+							  <th>Kaufen</th>
+						   </tr>
+						  </thead>
+						  <tbody>
+						  ';
+						  $arrayLadeInhalt = ladeInhalt($result2['ID']);
+						  
+						  while($result3 = mysql_fetch_assoc($arrayLadeInhalt)) {
+							   echo'<tr>
+								  <td>'.$result3['Name'].'</td>
+								  <td>'.$result3['Zutaten'].'</td>
+								  <td>'.$result3['Price'].'€</td>
+								  <form class="form-signin" method="POST">
+									<td><button type="submit" name="kaufen" value="'.$result3['ID'].'" class="btn btn-primary">Kaufen</button></td>
+								  </form>
+							   </tr>';
+						   }
+						  echo '</tbody>
+						</table> 
+					</div>';
+				}*/
+				foreach($arraySuperKategorien as $array)
+				{
+					echo' <div id="'.$array['Name'].'" class="tab-pane fade">
+					  <table class="table" width="100%">
+						  <thead>
+						   <tr>
+							  <th>Name</th>
+							  <th>Zusatzinformationen</th>
+							  <th>Preis</th>
+							  <th>Kaufen</th>
+						   </tr>
+						  </thead>
+						  <tbody>
+						  ';
+						  $arrayLadeInhalt = ladeInhalt($array['ID']);
+						  
+						  foreach($arrayLadeInhalt as $subrow)
+						  {
+							  echo '<tr>
+								  <td>'.$subrow['Name'].'</td>
+								  <td>'.$subrow['Zutaten'].'</td>
+								  <td>'.$subrow['Price'].'€</td>
+								  <form class="form-signin" method="POST">
+									<td><button type="submit" name="kaufen" value="'.$subrow['ID'].'" class="btn btn-primary">Kaufen</button></td>
+								  </form>
+							   </tr>';
+						  }
+						  echo '</tbody>
+						</table> 
+					</div>';
+				}
+				
+				
+				if (!empty($_POST['kaufen'])){
+					$kaufProduktID = $_POST['kaufen'];
+					
+					warenkorbHinzufuegen($kaufProduktID, $warenkorbCount);
+				}
+				
+			?>
+			
+			
+		  </div>
+  
+  
+  
 </div>
-		
-		
-		
-		
+
+<script>
+$(document).ready(function(){
+    $(".nav-tabs a").click(function(){
+        $(this).tab('show');
+    });
+});
+</script>
+
+
 	<nav class="navbar navbar-inverse navbar-fixed-bottom">
       <div class="container">
         <div id="navbar" class="collapse navbar-collapse">
@@ -96,10 +194,6 @@
       </div>
     </nav>
 	
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="./assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="./dist/js/bootstrap.min.js"></script>
+
   </body>
 </html>

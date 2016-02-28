@@ -1,22 +1,25 @@
 <?php
 
 	function loeschen($benutzer, $passwort){
-		$con = mysql_connect('localhost','root','');
-		mysql_select_db('ebertspizzapalace', $con);
+		//$con = mysql_connect('localhost','root','');
+		//mysql_select_db('ebertspizzapalace', $con);
+		createConnection();
+		
 		$sql = "SELECT Password FROM Customers WHERE Login = '$benutzer'";
 			
-		$result = mysql_query($sql, $con);
+		$result = mysql_query($sql);
 		
 		$passwortDB = mysql_result($result, 0, 0);		
 		
-		mysql_close($con);
+		//mysql_close($con);
+		closeConnection();
 		
 		if (crypt($passwort, $passwortDB) == $passwortDB){
 			$con = mysql_connect('localhost','root','');
 			mysql_select_db('ebertspizzapalace', $con);
 			$sql = "UPDATE Customers SET IsDeleted = '1' WHERE Login = '$benutzer'";
 				
-			$result = mysql_query($sql, $con);	
+			$result = mysql_query($sql);	
 			
 			mysql_close($con);
 			
