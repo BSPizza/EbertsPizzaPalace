@@ -15,17 +15,18 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Table structure for table `categories`
---
 DROP DATABASE IF EXISTS EbertsPizzaPalace;
+CREATE DATABASE EbertsPizzaPalace;
 USE EbertsPizzaPalace;
 
+--
+-- Table structure for table `Categories`
+--
 
-DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `Categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `categories` (
+CREATE TABLE `Categories` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(60) DEFAULT NULL,
   `SuperCategoryID` int(11) DEFAULT NULL,
@@ -36,13 +37,13 @@ CREATE TABLE `categories` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `customers`
+-- Table structure for table `Customers`
 --
 
-DROP TABLE IF EXISTS `customers`;
+DROP TABLE IF EXISTS `Customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customers` (
+CREATE TABLE `Customers` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(40) DEFAULT NULL,
   `LastName` varchar(40) DEFAULT NULL,
@@ -59,13 +60,13 @@ CREATE TABLE `customers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `discounts`
+-- Table structure for table `Discounts`
 --
 
-DROP TABLE IF EXISTS `discounts`;
+DROP TABLE IF EXISTS `Discounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `discounts` (
+CREATE TABLE `Discounts` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(120) DEFAULT NULL,
   `Begin` date DEFAULT NULL,
@@ -78,13 +79,13 @@ CREATE TABLE `discounts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `ingredients`
+-- Table structure for table `Ingredients`
 --
 
-DROP TABLE IF EXISTS `ingredients`;
+DROP TABLE IF EXISTS `Ingredients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ingredients` (
+CREATE TABLE `Ingredients` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(80) DEFAULT NULL,
   `IsDeleted` bit(1) DEFAULT NULL,
@@ -94,13 +95,13 @@ CREATE TABLE `ingredients` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `invoices`
+-- Table structure for table `Invoices`
 --
 
-DROP TABLE IF EXISTS `invoices`;
+DROP TABLE IF EXISTS `Invoices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `invoices` (
+CREATE TABLE `Invoices` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `OrderID` int(11) DEFAULT NULL,
   `TotalPrice` float DEFAULT NULL,
@@ -111,13 +112,13 @@ CREATE TABLE `invoices` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `menues`
+-- Table structure for table `Menues`
 --
 
-DROP TABLE IF EXISTS `menues`;
+DROP TABLE IF EXISTS `Menues`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `menues` (
+CREATE TABLE `Menues` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(80) DEFAULT NULL,
   `IsDeleted` bit(1) DEFAULT NULL,
@@ -131,13 +132,13 @@ CREATE TABLE `menues` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `orders`
+-- Table structure for table `Orders`
 --
 
-DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `Orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `orders` (
+CREATE TABLE `Orders` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Date` date DEFAULT NULL,
   `DesiredDeliveryTime` time DEFAULT NULL,
@@ -150,13 +151,13 @@ CREATE TABLE `orders` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `products`
+-- Table structure for table `Products`
 --
 
-DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `Products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `products` (
+CREATE TABLE `Products` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(80) DEFAULT NULL,
   `EnergyValue` int(11) DEFAULT NULL,
@@ -172,13 +173,13 @@ CREATE TABLE `products` (
 
 
 --
--- Table structure for table `xdiscountorder`
+-- Table structure for table `xDiscountOrder`
 --
 
-DROP TABLE IF EXISTS `xdiscountorder`;
+DROP TABLE IF EXISTS `xDiscountOrder`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `xdiscountorder` (
+CREATE TABLE `xDiscountOrder` (
   `DiscountID` int(11) NOT NULL DEFAULT '0',
   `OrderID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`DiscountID`,`OrderID`),
@@ -190,13 +191,13 @@ CREATE TABLE `xdiscountorder` (
 
 
 --
--- Table structure for table `xmenueorder`
+-- Table structure for table `xMenueOrder`
 --
 
-DROP TABLE IF EXISTS `xmenueorder`;
+DROP TABLE IF EXISTS `xMenueOrder`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `xmenueorder` (
+CREATE TABLE `xMenueOrder` (
   `MenueID` int(11) NOT NULL DEFAULT '0',
   `OrderID` int(11) NOT NULL DEFAULT '0',
   `Amount` int(11) DEFAULT NULL,
@@ -209,13 +210,13 @@ CREATE TABLE `xmenueorder` (
 
 
 --
--- Table structure for table `xmenueproduct`
+-- Table structure for table `xMenueProduct`
 --
 
-DROP TABLE IF EXISTS `xmenueproduct`;
+DROP TABLE IF EXISTS `xMenueProduct`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `xmenueproduct` (
+CREATE TABLE `xMenueProduct` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `MenueID` int(11) DEFAULT NULL,
   `ProductID` int(11) DEFAULT NULL,
@@ -232,13 +233,13 @@ CREATE TABLE `xmenueproduct` (
 
 
 --
--- Table structure for table `xproductingredient`
+-- Table structure for table `xProductIngredient`
 --
 
-DROP TABLE IF EXISTS `xproductingredient`;
+DROP TABLE IF EXISTS `xProductIngredient`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `xproductingredient` (
+CREATE TABLE `xProductIngredient` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `ProductID` int(11) DEFAULT NULL,
   `IngredientID` int(11) DEFAULT NULL,
@@ -254,13 +255,13 @@ CREATE TABLE `xproductingredient` (
 
 
 --
--- Table structure for table `xproductorder`
+-- Table structure for table `xProductOrder`
 --
 
-DROP TABLE IF EXISTS `xproductorder`;
+DROP TABLE IF EXISTS `xProductOrder`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `xproductorder` (
+CREATE TABLE `xProductOrder` (
   `ProductID` int(11) NOT NULL DEFAULT '0',
   `OrderID` int(11) NOT NULL DEFAULT '0',
   `Amount` int(11) DEFAULT NULL,
