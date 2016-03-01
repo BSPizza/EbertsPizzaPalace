@@ -61,6 +61,7 @@
 		//$con = mysql_connect('localhost','root','');
 		//mysql_select_db('ebertspizzapalace', $con);
 		createConnection();
+		
 		$sql = "INSERT INTO Customers (FirstName, Lastname, Street, Zip, City, Login, Password) VALUES ('$inputVorname', '$inputNachname', '$inputStrasse', '$inputPLZ', '$inputOrt', '$inputBenutzername', '$passwort')";
 		
 		$result = mysql_query($sql);

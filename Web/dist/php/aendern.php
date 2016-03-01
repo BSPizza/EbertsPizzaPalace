@@ -1,8 +1,10 @@
 <?php
 
 	function ladeDatenBenutzer($benutzer){
-		$con = mysql_connect('localhost','root','');
-		mysql_select_db('ebertspizzapalace', $con);
+		//$con = mysql_connect('localhost','root','');
+		//mysql_select_db('ebertspizzapalace', $con);
+		createConnection();
+		
 		$sql = "SELECT FirstName, LastName, Street, Zip, City FROM Customers WHERE Login = '$benutzer'";
 		
 		$result = mysql_query($sql, $con);
@@ -15,7 +17,8 @@
 		
 		$daten = array($firstName, $lastName, $street, $zip, $city);
 		
-		mysql_close($con);
+		//mysql_close($con);
+		closeConnection();
 	
 		return $daten;
 	}
@@ -44,25 +47,31 @@
 		
 	foreach($result as $key => $value)
 	{
-		$con = mysql_connect('localhost','root','');
-		mysql_select_db('ebertspizzapalace', $con);
+		//$con = mysql_connect('localhost','root','');
+		//mysql_select_db('ebertspizzapalace', $con);
+		createConnection();
+		
 		$sql = "UPDATE Customers SET $key = '$value' WHERE Login = '$benutzer'";
 				
 		$result = mysql_query($sql, $con);	
 			
-		mysql_close($con);
+		//mysql_close($con);
+		closeConnection();
 	}
 	
 	if (!empty($inputAltesPasswort) AND !empty($inputPasswortNeu) AND !empty($inputPasswortNeuW)){
-		$con = mysql_connect('localhost','root','');
-		mysql_select_db('ebertspizzapalace', $con);
+		//$con = mysql_connect('localhost','root','');
+		//mysql_select_db('ebertspizzapalace', $con);
+		createConnection();
+		
 		$sql = "SELECT Password FROM Customers WHERE Login = '$benutzer'";
 			
 		$result = mysql_query($sql, $con);
 		
 		$passwortAenderung = mysql_result($result, 0, 0);
 		
-		mysql_close($con);
+		//mysql_close($con);
+		closeConnection();
 		
 		echo $passwortAenderung;
 		echo crypt($inputAltesPasswort, $passwortAenderung);
@@ -71,13 +80,16 @@
 			if ($inputPasswortNeu == $inputPasswortNeuW){
 				$salt1 = '$2a$07$R.gJb2U2N.FmZ4hPp1y2CN$';
 				$passwortUpdate = crypt($inputPasswortNeu, $salt1);
-				$con = mysql_connect('localhost','root','');
-				mysql_select_db('ebertspizzapalace', $con);
+				//$con = mysql_connect('localhost','root','');
+				//mysql_select_db('ebertspizzapalace', $con);
+				createConnection();
+				
 				$sql = "UPDATE Customers SET Password = '$passwortUpdate' WHERE Login = '$benutzer'";
 						
 				$result = mysql_query($sql, $con);	
 					
-				mysql_close($con);
+				//mysql_close($con);
+				closeConnection();
 				
 				session_destroy();
 			

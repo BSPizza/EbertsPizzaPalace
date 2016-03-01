@@ -4,6 +4,7 @@
 		//$con = mysql_connect('localhost','root','');
 		//mysql_select_db('ebertspizzapalace', $con);
 		createConnection();
+		
 		$sql = "SELECT o.Date, i.TotalPrice, i.ID, o.ID AS ORDERID FROM Customers c, Orders o, Invoices i WHERE c.ID = o.CustomerID AND o.ID = i.OrderID AND c.Login = '$benutzer' ORDER BY o.Date DESC LIMIT 10";
 		
 		$results = mysql_query($sql);
@@ -20,7 +21,7 @@
 		createConnection();
 		
 		$sql = "SELECT p.Name, xpo.Amount, group_concat(i.Name) AS Zutaten, o.ID
-		FROM customers c, Orders o, xproductorder xpo, products p, xproductingredient xpi, ingredients i 
+		FROM Customers c, Orders o, xProductOrder xpo, Products p, xProductIngredient xpi, Ingredients i 
 		WHERE c.ID = o.CustomerID 
 		AND o.ID = xpo.OrderID 
 		AND xpo.ProductID = p.ID 

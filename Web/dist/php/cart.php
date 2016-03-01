@@ -32,13 +32,14 @@
 	
 	
 	function warenkorbLaden($value){
-		createConnection();
 		//$con = mysql_connect('localhost','root','');
 		//mysql_select_db('ebertspizzapalace', $con);
+		createConnection();
+		
 		$sql = "SELECT p.Name, GROUP_CONCAT(i.Name) AS Zutaten, p.Price, p.ID
-				FROM products p
-                LEFT JOIN xproductingredient xpi ON p.ID = xpi.ProductID
-                LEFT JOIN ingredients i ON i.ID = xpi.IngredientID
+				FROM Products p
+                LEFT JOIN xProductIngredient xpi ON p.ID = xpi.ProductID
+                LEFT JOIN Ingredients i ON i.ID = xpi.IngredientID
 				WHERE p.ID = '$value'
 				GROUP BY p.ID;";
 		
@@ -79,10 +80,10 @@
 	
 	
 	function warenkorbGesamtpreis($anzahl, $produkt){
-	
-		createConnection();
 		//$con = mysql_connect('localhost','root','');
 		//mysql_select_db('ebertspizzapalace', $con);
+		createConnection();
+		
 		$sql = "SELECT Price FROM Products WHERE ID = '$produkt'";
 			
 		$result = mysql_query($sql);

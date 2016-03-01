@@ -22,7 +22,7 @@ session_start();
 		echo $key;
 		if($key == "gesamtPreisFeld"){
 			$TotalPrice = $value;
-			$sql2 = "INSERT INTO invoices (OrderID, TotalPrice) VALUES (@orders_id, '$TotalPrice');";
+			$sql2 = "INSERT INTO Invoices (OrderID, TotalPrice) VALUES (@orders_id, '$TotalPrice');";
 			array_push($array, $sql2);
 		}
 		else{
@@ -31,7 +31,7 @@ session_start();
 						echo $string;
 						echo $key;
 				if($key == $string){
-					$sql3 = "INSERT INTO xproductorder (ProductID, OrderID, Amount) VALUES ('$valueCart', @orders_id, '$value');";
+					$sql3 = "INSERT INTO xProductOrder (ProductID, OrderID, Amount) VALUES ('$valueCart', @orders_id, '$value');";
 					array_push($array, $sql3);
 				}	
 			}
@@ -45,7 +45,7 @@ session_start();
 	
 	echo $sqlQuery;
 	
-	$mysqli = new mysqli("localhost", "root", "", "ebertspizzapalace");
+	$mysqli = new mysqli("localhost", "root", "", "EbertsPizzaPalace");
 		
 	if (!$mysqli->multi_query($sqlQuery)) {
 		echo "Multi query failed: (" . $mysqli->errno . ") " . $mysqli->error;

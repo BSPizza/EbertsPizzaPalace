@@ -4,7 +4,8 @@
 		//$con = mysql_connect('localhost','root','');
 		//mysql_select_db('ebertspizzapalace', $con);
 		createConnection();
-		$sql = "SELECT Name, ID FROM categories WHERE SuperCategoryID = '$ID'";
+		
+		$sql = "SELECT Name, ID FROM Categories WHERE SuperCategoryID = '$ID'";
 		
 		$results = mysql_query($sql);
 		
@@ -31,9 +32,9 @@
 		createConnection();
 		
 		$sql = "SELECT p.Name, GROUP_CONCAT(i.Name) AS Zutaten, p.Price, p.ID
-				FROM products p
+				FROM Products p
                 INNER JOIN Categories c ON p.CategoryID = c.ID
-                LEFT JOIN xproductingredient xpi ON p.ID = xpi.ProductID
+                LEFT JOIN xProductIngredient xpi ON p.ID = xpi.ProductID
                 LEFT JOIN Ingredients i ON xpi.IngredientID = i.ID
                 WHERE p.IsDeleted = 0
 				AND p.CategoryID = ".$ID."

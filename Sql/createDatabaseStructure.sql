@@ -107,7 +107,7 @@ CREATE TABLE `Invoices` (
   `TotalPrice` float DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `OrderID` (`OrderID`),
-  CONSTRAINT `invoices_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`ID`)
+  CONSTRAINT `invoices_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `Orders` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -127,7 +127,7 @@ CREATE TABLE `Menues` (
   `DeleteDate` date DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `CategoryID` (`CategoryID`),
-  CONSTRAINT `menues_ibfk_1` FOREIGN KEY (`CategoryID`) REFERENCES `categories` (`ID`)
+  CONSTRAINT `menues_ibfk_1` FOREIGN KEY (`CategoryID`) REFERENCES `Categories` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -146,7 +146,7 @@ CREATE TABLE `Orders` (
   `CustomerID` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `CustomerID` (`CustomerID`),
-  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customers` (`ID`)
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `Customers` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -167,7 +167,7 @@ CREATE TABLE `Products` (
   `DeleteDate` date DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `CategoryID` (`CategoryID`),
-  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`CategoryID`) REFERENCES `categories` (`ID`)
+  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`CategoryID`) REFERENCES `Categories` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -184,8 +184,8 @@ CREATE TABLE `xDiscountOrder` (
   `OrderID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`DiscountID`,`OrderID`),
   KEY `OrderID` (`OrderID`),
-  CONSTRAINT `xdiscountorder_ibfk_1` FOREIGN KEY (`DiscountID`) REFERENCES `discounts` (`ID`),
-  CONSTRAINT `xdiscountorder_ibfk_2` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`ID`)
+  CONSTRAINT `xdiscountorder_ibfk_1` FOREIGN KEY (`DiscountID`) REFERENCES `Discounts` (`ID`),
+  CONSTRAINT `xdiscountorder_ibfk_2` FOREIGN KEY (`OrderID`) REFERENCES `Orders` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,8 +203,8 @@ CREATE TABLE `xMenueOrder` (
   `Amount` int(11) DEFAULT NULL,
   PRIMARY KEY (`MenueID`,`OrderID`),
   KEY `OrderID` (`OrderID`),
-  CONSTRAINT `xmenueorder_ibfk_1` FOREIGN KEY (`MenueID`) REFERENCES `menues` (`ID`),
-  CONSTRAINT `xmenueorder_ibfk_2` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`ID`)
+  CONSTRAINT `xmenueorder_ibfk_1` FOREIGN KEY (`MenueID`) REFERENCES `Menues` (`ID`),
+  CONSTRAINT `xmenueorder_ibfk_2` FOREIGN KEY (`OrderID`) REFERENCES `Orders` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -226,8 +226,8 @@ CREATE TABLE `xMenueProduct` (
   PRIMARY KEY (`ID`),
   KEY `MenueID` (`MenueID`),
   KEY `ProductID` (`ProductID`),
-  CONSTRAINT `xmenueproduct_ibfk_1` FOREIGN KEY (`MenueID`) REFERENCES `menues` (`ID`),
-  CONSTRAINT `xmenueproduct_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `products` (`ID`)
+  CONSTRAINT `xmenueproduct_ibfk_1` FOREIGN KEY (`MenueID`) REFERENCES `Menues` (`ID`),
+  CONSTRAINT `xmenueproduct_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -248,8 +248,8 @@ CREATE TABLE `xProductIngredient` (
   PRIMARY KEY (`ID`),
   KEY `ProductID` (`ProductID`),
   KEY `IngredientID` (`IngredientID`),
-  CONSTRAINT `xproductingredient_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `products` (`ID`),
-  CONSTRAINT `xproductingredient_ibfk_2` FOREIGN KEY (`IngredientID`) REFERENCES `ingredients` (`ID`)
+  CONSTRAINT `xproductingredient_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ID`),
+  CONSTRAINT `xproductingredient_ibfk_2` FOREIGN KEY (`IngredientID`) REFERENCES `Ingredients` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -267,8 +267,8 @@ CREATE TABLE `xProductOrder` (
   `Amount` int(11) DEFAULT NULL,
   PRIMARY KEY (`ProductID`,`OrderID`),
   KEY `OrderID` (`OrderID`),
-  CONSTRAINT `xproductorder_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `products` (`ID`),
-  CONSTRAINT `xproductorder_ibfk_2` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`ID`)
+  CONSTRAINT `xproductorder_ibfk_1` FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ID`),
+  CONSTRAINT `xproductorder_ibfk_2` FOREIGN KEY (`OrderID`) REFERENCES `Orders` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

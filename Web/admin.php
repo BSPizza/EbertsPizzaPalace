@@ -296,14 +296,14 @@
 			$name = adjustVariable($_POST['newCategoryName']);
 			$super = adjustVariable($_POST['newCategorySupercategory']);
 			
-			//saveNewDiscount($name, $begin, $end, $discount);
+			saveNewDiscount($name, $begin, $end, $discount);
 			//debug info
-			echo "<script language=\"javascript\">";
+			/*echo "<script language=\"javascript\">";
 			echo "alert(\"";
 			echo "erstelle neue Kategorie: ".$name;			
 			echo "als Unterkategorie von ".$super."";
 			echo "\");";
-			echo "</script>";
+			echo "</script>";*/
 			
 		}
 	
@@ -311,13 +311,13 @@
 		{//handle everything to delete a product
 			$toDel = adjustVariable($_POST['delCategoryItem']);
 			
-			//delCategoryItem($toDel);
+			delCategoryItem($toDel);
 			//debug info
-			echo "<script language=\"javascript\">";
+			/*echo "<script language=\"javascript\">";
 			echo "alert(\"";
 			echo $toDel;				
 			echo "\");";
-			echo "</script>";
+			echo "</script>";*/
 		}
 	
 		if(!empty($_POST['editCategorySubmit']))
@@ -327,15 +327,15 @@
 			$superCategory = adjustVariable($_POST['editCategorySupercategory']);
 			
 				
-			//changeExistingDiscount($itemID,$name,$begin,$end,$discount);
+			changeExistingDiscount($itemID,$name,$begin,$end,$discount);
 			//debug info
-			echo "<script language=\"javascript\">";
+			/*echo "<script language=\"javascript\">";
 			echo "alert(\"";
 			echo "Change ID ".$id;
 			echo "Set Name to ".$name;
 			echo "Change SuperCategory to".$superCategory;			
 			echo "\");";
-			echo "</script>";
+			echo "</script>";*/
 		}
 	
 	
